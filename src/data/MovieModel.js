@@ -6,7 +6,7 @@ const MovieModel = function () {
     
     // API Calls
     this.getAllMovies = function (keyword) {
-        const url = 'http://www.omdbapi.com/?page=1&apikey=f604b64c';
+        const url = 'https://www.omdbapi.com/?page=1&apikey=f604b64c';
 
         var searchword = "";
         if (keyword != null || keyword === "") {
