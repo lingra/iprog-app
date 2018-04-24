@@ -9,7 +9,7 @@ class Login extends Component {
   render() {
       
       return (
-        <div class="container-fluid" id="loginpage">
+        <div id="loginpage">
             <div class="row">
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <p id="webpage-title">M(yFave)Db</p>

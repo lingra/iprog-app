@@ -23,7 +23,7 @@ const MovieModel = function () {
 
     this.getMovie = function (id) {
         // Get the right URL form API
-        var movieURL = 'http://www.omdbapi.com/?i=' + id + '&apikey=f604b64c';
+        var movieURL = 'https://www.omdbapi.com/?i=' + id + '&apikey=f604b64c';
 
         return fetch(movieURL)
             .then(processResponse)

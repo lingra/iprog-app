@@ -5,7 +5,11 @@ import { modelInstance } from './data/MovieModel';
 import Start from './Start/Start';
 import SignUp from './SignUp/SignUp';
 import Login from './LogIn/Login';
-import Main from './Main/Main';
+import MainPage from './MainPage/MainPage';
+import EditProfile from './EditProfile/EditProfile';
+import ProfilePage from './ProfilePage/ProfilePage';
+import ProfileBar from './ProfileBar/ProfileBar';
+import ScreenList from './ScreenList/ScreenList';
 
 class App extends Component {
   constructor(props) {
@@ -25,8 +29,9 @@ class App extends Component {
           
             <Route path="/Signup" render={() => <SignUp model={modelInstance}/>}/>
             <Route path="/Login" render={() => <Login model={modelInstance}/>}/>
-            <Route path="/Main" render={() => <Main model={modelInstance}/>}/>
-                
+            <Route path="/Main" render={() => <MainPage model={modelInstance}/>}/>
+            <Route path="/Profile" render={() => <ProfilePage model={modelInstance}/>}/>
+            <Route path="/ScreenList" render={() => <ScreenList model={modelInstance}/>}/>    
         </div>
     );
   }

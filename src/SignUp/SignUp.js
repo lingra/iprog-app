@@ -9,7 +9,7 @@ class Signin extends Component {
   render() {
       
       return (
-        <div class="container-fluid" id="signuppage">
+        <div id="signuppage">
             <div class="row">
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <p id="webpage-title">M(yFave)Db</p>

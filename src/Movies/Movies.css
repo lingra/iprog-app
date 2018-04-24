@@ -1,0 +1,10 @@
+.imgTd img {
+    width: 170px;
+    height: 254px;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+.movieContainer {
+    padding-bottom: 40px;
+}

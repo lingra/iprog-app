@@ -9,9 +9,9 @@ class Start extends Component {
   render() {
       
       return (
-        <div class="container-fluid" id="startpage">
+        <div id="startpage">
             <div class="row">
-                <p id="webpage-title">M(yFave)Db</p>
+                <p id="webpage-title-start">M(yFave)Db</p>
                 <div class="col-sm-3"></div>
                 <div class="col-sm-2">
                     <Link to="/signup">

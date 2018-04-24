@@ -3,14 +3,15 @@
     height: 100vh;
 }
 
-#webpage-title {
+#webpage-title-start {
     font-family: 'Faster One', sans-serif;
     text-align: center;
     color: white;
 	text-shadow: 0 0 10px #FFFFFF;
 	text-align: center;
 	font-size: 90pt;
-	margin-top: 30vh;
+	padding-top: 30vh;
+    width: 100vw;
 }
 
 .startpageBtn {
