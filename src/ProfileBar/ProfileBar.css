@@ -1,0 +1,14 @@
+.profileInfo {
+    text-align: center;
+}
+
+#profilePic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+#profileName {
+    font-size: 20px;
+    font-weight: bold;
+}

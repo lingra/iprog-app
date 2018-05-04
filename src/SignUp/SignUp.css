@@ -19,11 +19,11 @@
     font-family: 'Roboto', sans-serif;
 }
 
-#formText {
+#formTextSignUp {
     text-align: left;
     color: white;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    font-size: 25px;
+    font-size: 20px;
     margin-bottom: 2px;
     margin-left: 55px;
 }
@@ -49,4 +49,9 @@
     border: 2px solid white;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+#test {
+    font-size: 16px;
+    color: black;
 }

@@ -2,6 +2,7 @@ const MovieModel = function () {
 
     // Variables
     var observers = [];
+    var userID = "";
 
     
     // API Calls
@@ -62,6 +63,74 @@ const MovieModel = function () {
     const notifyObservers = function () {
         observers.forEach(o => o.update());
     };
+        
+    //Firebase
+    /*
+    var firebase = require('firebase');
+    
+        //Init
+    var config = {
+        apiKey: "AIzaSyDZ-3B51anSKg6QcWddRA8dYlXHmcK0Uoo",
+        authDomain: "iprog-myfavedb.firebaseapp.com",
+        databaseURL: "https://iprog-myfavedb.firebaseio.com",
+        projectId: "iprog-myfavedb",
+        storageBucket: "iprog-myfavedb.appspot.com",
+        messagingSenderId: "688175599939"
+    };
+    firebase.initializeApp(config);
+    
+    this.signUp = function(email, password) {
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
+        }
+    
+    this.signOut = function() {
+        firebase.auth().signOut().then(function() {
+            //If succesful redirect to start
+            // Sign-out successful.
+            console.log("Sign out succesfull")
+        }).catch(function(error) {
+            console.log("Something went wrong with sign out")
+            //Print error to console? Or alert?
+            // An error happened.
+        });
+    }
+    
+    this.getUserID = function() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.userID = user.uid;
+                console.log("inloggad", this.userID);
+            }
+            else {
+                console.log("no user signed in");
+                this.userID = null;
+                console.log("ej", this.userID);
+            }
+        });
+        console.log("efterloop", this.userID);
+        return this.userID;
+        
+    }
+    
+    this.getUserInfo = function() {
+        var childData;
+        var userRef = firebase.database().ref('users');
+        userRef.on('value', function(snapshot) {
+            console.log("hej");
+            snapshot.forEach(function(childSnapshot) {
+                console.log(childSnapshot.val());
+                var childData = childSnapshot.val();
+                console.log(childData);
+            });
+        });
+        console.log(childData);
+        return childData;
+    }*/
+
 };
 
 export const modelInstance = new MovieModel();

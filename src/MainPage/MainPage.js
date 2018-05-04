@@ -4,6 +4,7 @@ import {modelInstance} from '../data/MovieModel';
 import { Link } from 'react-router-dom';
 import Movies from '../Movies/Movies';
 import ProfileBar from '../ProfileBar/ProfileBar';
+import { database, signOut } from "../firebase";
 
 class MainPage extends Component {
     
@@ -54,16 +55,27 @@ class MainPage extends Component {
             this.submitKeyword();
         }
     }
-  
+    
+    signOutUser = () => {
+        console.log("In signOutUser");
+        signOut();
+    }
+    
+    
   render() {     
       return (
         <div id="mainpage" class="nopadding">
             <div className="row nopadding" id="header">
-            <div className="col-sm-8 nopadding">
+            <div className="col-sm-5 nopadding">
                 <input type="text" className="searchBar" placeholder="Search for movies here" onKeyPress={this._handleKeyPress}/>
             </div>
-                <div className="col-sm-4 nopadding">
-                    <p id="webpage-title-small">M(yFave)Db</p>
+            <div className="col-sm-5 nopadding">
+                <p id="webpage-title-small">M(yFave)Db</p>
+            </div>
+                <div className="col-sm-2 nopadding">
+                    <Link to="/">
+                        <button onClick={() => this.signOutUser()} className="signOutBtn">Sign out</button>
+                    </Link>
                 </div>
             </div>
             <div className="row">
