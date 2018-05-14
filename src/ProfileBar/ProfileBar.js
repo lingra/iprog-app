@@ -26,10 +26,11 @@ class ProfileBar extends Component {
             //fetching: true
         })
         
-        var currentUser = localStorage.getItem('currentUser');
+        var currentUser = modelInstance.getCookie();
+        console.log("cu", currentUser);
         this.ref = getProfile(currentUser);
         this.ref2 = getUserLists(currentUser);
-        if (currentUser) {
+        if (currentUser !== "guest") {
             this.ref.on('value', snapshot => {
                 this.setUser(snapshot.val().username, snapshot.val().image);
             })
@@ -114,12 +115,16 @@ class ProfileBar extends Component {
           case 'USER':
             if (this.state.name != "" && this.state.image != "Unknown") {
                 profileImg = <img id="profilePic" alt="Your profile picture" src={this.state.image}/>
-                profileNm = <p id="profileName">{this.state.name}</p>;
+                profileNm = (<Link to="/profile" style={{textDecoration:'none'}}>
+                            <p id="profileName">{this.state.name}</p>
+                        </Link>);
             } else {
                 profileImg = (<div id="fakeProfile">
                                 <span id="fakeUser" class="glyphicon glyphicon-user"></span>
                               </div>);
-                profileNm = <p id="profileName">{this.state.name}</p>;
+                profileNm = (<Link to="/profile" style={{textDecoration:'none'}}>
+                                <p id="profileName">{this.state.name}</p>
+                            </Link>);
                 profileInf =  (<div>
                                <p id="#profileInf">To set your profile image - click on your username to go to your profile and edit.</p>
                                </div>);
@@ -157,9 +162,7 @@ class ProfileBar extends Component {
                 <div className="col-sm-10">
                     <div className="profileInfo">
                         {profileImg}
-                        <Link to="/profile" style={{textDecoration:'none'}}>
-                            {profileNm}
-                        </Link>
+                        {profileNm}
                         {profileInf}
                     </div>
                 </div>

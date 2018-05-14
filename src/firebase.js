@@ -23,7 +23,7 @@ export function editProfilePic(userPic) {
     var user = Firebase.auth().currentUser;
     if (user) {
         var userID = user.uid;
-        Firebase.database().ref('users/' + userID).set({
+        Firebase.database().ref('users/' + userID).update({
             image: userPic
         })
         console.log("User signed in:", user.uid);
@@ -37,17 +37,33 @@ export function editProfile(userName, userGenre, userLine, userMovie, userActor,
     var user = Firebase.auth().currentUser;
     if (user) {
         var userID = user.uid;
-        Firebase.database().ref('users/' + userID).update({
-            username: userName,
-            favgenre: userGenre,
-            favline: userLine,
-            favmovie: userMovie,
-            favactor: userActor,
+        if (userName !== ""){
+            Firebase.database().ref('users' + userID).update({
+            username: userName
+        })};
+        if (userGenre !== ""){
+            Firebase.database().ref('users' + userID).update({
+            favgenre: userGenre
+        })};
+        if (userLine !== ""){
+            Firebase.database().ref('users' + userID).update({
+            favline: userLine
+            })};
+        if (userMovie !== ""){
+            Firebase.database().ref('users' + userID).update({
+            favmovie: userMovie
+        })};
+        if (userActor !== ""){
+            Firebase.database().ref('users' + userID).update({
+            favactor: userActor
+        })};
+        if (userSnack !== ""){
+            Firebase.database().ref('users' + userID).update({
             favsnack: userSnack
-        })
-        console.log("User signed in:", user.uid);
+        })};
+        console.log("User changed data!");
     } else {
-        console.log("No user signed in");
+        console.log("No data changed");
     }
 }
 

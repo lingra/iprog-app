@@ -1,0 +1,65 @@
+#fullscreenlistpage {
+    background-image: url(../images/gradients1.jpg);
+    height: 100vh;
+    overflow: auto;
+}
+
+#webpage-title {
+    font-family: 'Faster One', sans-serif;
+    text-align: center;
+    color: white;
+	text-shadow: 0 0 10px #FFFFFF;
+	font-size: 30pt;
+	margin-top: 1vh;
+    padding-right: 60px;
+}
+
+#header {
+    background-color: rgba(255, 224, 179, 0.5);
+    height: 12vh;
+}
+
+.pagetitle {
+    text-align: left;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-size: 35px;
+    margin-bottom: 2px;
+    margin-left: 55px;
+    padding-bottom: 3%;
+}
+
+#movieNum {
+    font-family: 'Faster One', sans-serif;
+    color: white;
+	text-shadow: 0 0 10px #FFFFFF;
+	font-size: 60pt;
+}
+
+.imgTdFs img {
+    width: 120px;
+    height: 180px;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+#returnHome {
+    margin-top: 5px;
+    color: white;
+    text-shadow: 0 0 10px #FFFFFF;
+    font-size: 15pt;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(224, 109, 104, 0.3); 
+    border-radius: 7px;
+}

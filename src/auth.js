@@ -1,11 +1,12 @@
 import Firebase from "firebase";
+import {modelInstance} from './data/MovieModel';
 
 const currentUser = () => {
     var user = Firebase.auth().currentUser;
     if (user) {
-        localStorage.setItem('currentUser', user.uid);
+        modelInstance.setCookie(user.uid);
     } else {
-        localStorage.setItem('currentUser', 'visitor');
+        modelInstance.setCookie();
     }
 }
 
@@ -18,6 +19,6 @@ export const signUp = (email, password) => {
 }
 
 export const signOut = () => {
-    localStorage.clear();
+    modelInstance.removeCookie();
     return Firebase.auth().signOut().catch(console.log);
 }

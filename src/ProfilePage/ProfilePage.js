@@ -90,7 +90,7 @@ class ProfilePage extends Component {
               
             <div className="row">
                 <div className="col-sm-6">
-                  <div className="col-sm-1"></div>
+                    <div className="col-sm-1"></div>
                     <div className="col-sm-8 profileInfo">
                         {profileImg}
                         <h3 id="profileNm">{profileNm}</h3>
@@ -117,11 +117,16 @@ class ProfilePage extends Component {
                         </div>
                     </div>
                     <div className="col-sm-2">
-                    <Link to="EditProfile">
-                        <div id="eBtn">
-                            <button id="editBtn">Edit</button>
-                        </div>
-                    </Link>
+                        <Link to="EditImage">
+                            <div id="eBtn">
+                                <button id="editBtn">Edit Image</button>
+                            </div>
+                        </Link>
+                        <Link to="EditProfile">
+                            <div id="eBtn">
+                                <button id="editBtn">Edit Info</button>
+                            </div>
+                        </Link>
                     </div>
                     
                 </div>
