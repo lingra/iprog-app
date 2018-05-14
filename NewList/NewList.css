@@ -1,0 +1,104 @@
+.addContainer {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#addMovie {
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  text-align: center;
+  text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.5);
+  color: white;
+  background-color: rgba(255, 128, 191, 0.8);
+  border-radius: 10px;
+  margin-left: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 250px;
+  border: 1px dashed white;
+  box-shadow: 0 1px 6px 1px rgba(0,0,0,0.2);
+}
+
+#msg {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 10px;
+  color: red;
+  padding-left: 5px;
+  width: 250px;
+  text-align: center;
+}
+
+#movieList {
+    max-height: 350px;
+    overflow-y: scroll;
+}
+
+.movieInList {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.4);
+  width: 380px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 15px;
+  margin-left: 5px;
+  background-color: rgba(119, 165, 137, 0.4);
+  cursor: move;
+}
+
+ol {
+  list-style: none;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.listItem {
+  text-shadow: 0.5px 0.5px 1px rgba(0,0,0,0.5);
+  color: rgb(255, 128, 191);
+  width: 1.75em;
+  left: .25em;
+  top: .25em;
+  border: 0;
+  text-align: center;
+  background: transparent;
+}
+
+#removeIcon {
+    cursor: pointer;
+    float: right;
+    color: rgb(119, 165, 137);
+    padding-top: 4px;
+}
+
+.setListName {
+    margin-top: 20px;
+    font-size: 30px;
+    width: 90%;
+    margin-left: 30px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 0px;
+    border-radius: 5px;
+    height: 60px;
+    padding-left: 10px;
+}
+
+#saveList {
+    font-family: 'Roboto', sans-serif;
+    margin-top: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: #ffdf80;
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 2px solid white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
