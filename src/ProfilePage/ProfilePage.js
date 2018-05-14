@@ -4,14 +4,83 @@ import {modelInstance} from '../data/MovieModel';
 import { Link } from 'react-router-dom';
 import profileImg from "../images/gradients1.jpg";
 import listImg from "../images/gradients1.jpg";
+import { database, getUserID, getUserInfo, signOut, authentication } from "../firebase";
 
 
 class ProfilePage extends Component {
     
-  render() {
-
-      return (
-        <div id="ProfilePage">
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: "",
+            image: "",
+            status: "",
+            fGenre: "",
+            fLine: "",
+            fMovie: "",
+            fActor: "",
+            fSnack: "",
+            fetching: false
+        };
+        this.unsubscribe;
+    }
+    
+    componentDidMount() {
+        this.setState({
+            name: "",
+            image: "",
+            fGenre: "",
+            fLine: "",
+            fMovie: "",
+            fActor: "",
+            fSnack: "",
+            status: 'USER',
+            fetching: true})
+        
+        //Attach listener to unsubscribe, so that we can stop listening when component unmounts
+        this.unsubscribe = authentication.onAuthStateChanged((user) => {
+            if (user) {
+                var currentUser = user.uid;
+                this.ref = database.ref('users/' + currentUser);
+                this.ref.on('value', snapshot => {
+                    this.setUser(snapshot.val().username, snapshot.val().image, snapshot.val().favgenre, snapshot.val().favline, snapshot.val().favmovie, snapshot.val().favactor, snapshot.val().favsnack);
+                })
+                console.log("hämtat data")
+            } else {
+                console.log("Ingen inloggad");
+            }
+        });
+    }
+    
+    componentWillUnmount() {
+        this.ref.off()
+        this.unsubscribe(); //Stop listening to user
+    }
+    
+    setUser(userName, userPic, favGenre, favLine, favMovie, favActor, favSnack) {
+        this.setState({
+            name: userName,
+            image: userPic,
+            fGenre: favGenre,
+            fLine: favLine,
+            fMovie: favMovie,
+            fActor: favActor,
+            fSnack: favSnack,
+            fetching: false
+        })
+    }
+    
+    
+    
+    render() {
+        
+        
+        var profileNm = <p id="profileNm">{this.state.name}</p>;
+        
+        var profileImg = <img id="profilePic" alt="Your profile pic" src={this.state.image}></img>;
+        
+        return (
+            <div id="ProfilePage">
             <div className="row" id="header">
                 <div className="col-sm-8"></div>
                 <div className="col-sm-4">
@@ -23,30 +92,26 @@ class ProfilePage extends Component {
                 <div className="col-sm-6">
                   <div className="col-sm-1"></div>
                     <div className="col-sm-8 profileInfo">
-                        <img id="profilePic" alt="Some profile Pic" src={profileImg}></img>
-                        <h3 id="profileName">Username</h3>
+                        {profileImg}
+                        <h3 id="profileNm">{profileNm}</h3>
                         <div>
                             <h4>Profile information</h4>
                         </div>
                         <div className="container">
                             <div className="col-sm-8 facts">
                                 <div className="col-sm-4" id="bold">
-                                    <p>name</p>
-                                    <p>email</p>
-                                    <p>favorite genre</p>
-                                    <p>who would play me in a movie</p>
-                                    <p>favorite movie snack</p>
-                                    <p>movie at the cinema or at home</p>
-                                    <p>Harry Potter or Star Wars?</p>
+                                    <p>Favorite genre</p>
+                                    <p>Favorite line</p>
+                                    <p>Favorite movie</p>
+                                    <p>Who would play me in a movie</p>
+                                    <p>Favorite movie snack</p>
                                 </div>
                                 <div className="col-sm-4">
-                                    <p>my name</p>
-                                    <p>my email</p>
-                                    <p>my favorite genre</p>
-                                    <p>my actor</p>
-                                    <p>my favorite snack</p>
-                                    <p>cinema vs home</p>
-                                    <p>Harry Potter vs Star Wars</p>
+                                    <p>{this.state.fGenre}</p>
+                                    <p>{this.state.fLine}</p>
+                                    <p>{this.state.fMovie}</p>
+                                    <p>{this.state.fActor}</p>
+                                    <p>{this.state.fSnack}</p>
                                 </div>
                             </div>
                         </div>

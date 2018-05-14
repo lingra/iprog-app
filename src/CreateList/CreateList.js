@@ -82,7 +82,9 @@ class CreateList extends Component {
                 </div>
                 <div className="col-sm-8 nopadding" id="movieListDiv">
                     <input type="text" className="searchBar" placeholder="Search for movies here" onKeyPress={this._handleKeyPress}/>
-                    <span className="glyphicon glyphicon-home" id="home"></span>
+                    <Link to="/main">
+                        <span className="glyphicon glyphicon-home" id="home"></span>
+                    </Link>
                     <div id="movieListDiv">
                         {info}
                         <Movies currentMovies = {this.state.movies} />

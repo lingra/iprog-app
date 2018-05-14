@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Movies.css';
 import { Link } from 'react-router-dom';
+import testimg from "../images/gradients2.jpg";
 
 class Movies extends Component {
     
@@ -13,15 +14,30 @@ class Movies extends Component {
     }
     
     componentDidMount() {
-        console.log(this.state.status);
+        this.setState({
+            status: 'INITIAL'
+        });
     }
     
     componentWillReceiveProps(nextProps) {
-        console.log("Movie receive props, ", nextProps.currentMovies);
-        this.setState({
-            status: 'SEARCHRESULT',
-            currentMovies: nextProps.currentMovies
-        })
+        if (nextProps.currentMovies != '') {
+            this.setState({
+                status: 'RESULT',
+                currentMovies: nextProps.currentMovies
+            });
+        } else {
+            this.setState({
+                status: 'INITIAL'
+            });
+        }
+    }
+    
+    // Function for what we do when one drags a movie
+    onDragStart = (e) => {
+        e.dataTransfer.dropEffect = "move";
+        var movieObj = {'title': e.target.title, 'id': e.target.id, 'type': "movie"};
+        var objToTransf = JSON.stringify(movieObj);
+        e.dataTransfer.setData("text/plain", objToTransf);
     }
     
   render() {
@@ -31,19 +47,30 @@ class Movies extends Component {
           case 'INITIAL':
               movieList = "";
               break;
-          case 'SEARCHRESULT':
-            movieList = this.state.currentMovies.map((movie) => 
-                <div className="col-sm-3 dishContainer" key={movie.imdbID}>
-                    <table className="image">
-                        <tbody>
-                            <tr>
-                                <td className="imgTd">
-                                    <img className="img" alt={movie.Title} src={movie.Poster} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>);
+              
+          case 'RESULT':
+            movieList = this.state.currentMovies.map((movie) => {
+                var posterImg;
+                if (movie.Poster === 'N/A') {
+                    posterImg = <div class="imgMissing"><p id="postTitle">Poster not available</p></div>;
+                } else {
+                    posterImg = <img className="img" draggable="false" alt={movie.Title} src={movie.Poster}/>;
+                }
+                return (
+                    <div className="col-sm-3 movieContainer" draggable="true" data-appendto="movie" onDragStart={(e) => this.onDragStart(e, this)} title={movie.Title} id={movie.imdbID}>
+                        <table className="image">
+                            <tbody>
+                                <tr>
+                                    <td className="imgTd">
+                                        {posterImg}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p id="movTitle">{movie.Title}</p>
+                    </div>)
+            });
+
               break;
           case 'ERROR':
             break;

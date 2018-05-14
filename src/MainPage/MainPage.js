@@ -4,7 +4,8 @@ import {modelInstance} from '../data/MovieModel';
 import { Link } from 'react-router-dom';
 import Movies from '../Movies/Movies';
 import ProfileBar from '../ProfileBar/ProfileBar';
-import { database, signOut } from "../firebase";
+import { database } from "../firebase";
+import { signOut } from "../auth";
 
 class MainPage extends Component {
     
@@ -17,19 +18,9 @@ class MainPage extends Component {
     }
     
     componentDidMount() {
-        /* DO SOMETHING ELSE HERE, INSTEAD OF SHOWING MOVIES IMMEDIATELY?*/
-        /*
-        modelInstance.getAllMovies(this.searchInput).then(movies => {
-            console.log("Result from API", movies.Search);
-            this.setState({
-                movies: movies.Search
-            })
-        }).catch(() => {
-        }) */
-    }
-    
-    componentDidUpdate() {
-        console.log("new", this.state.movies);
+        this.setState({
+            status: 'INITIAL'
+        });
     }
     
     handleKeywordChange = (event) => {
@@ -39,10 +30,15 @@ class MainPage extends Component {
     }
     
     submitKeyword = () => {
+        this.setState({
+            status: 'LOADING',
+            movies: ''
+        })
         // Submit current input to retrieve API
         modelInstance.getAllMovies(this.searchInput).then(movies => {
             console.log("Result from API", movies.Search);
             this.setState({
+                status: 'DONE',
                 movies: movies.Search
             })
         }).catch(() => {
@@ -57,12 +53,32 @@ class MainPage extends Component {
     }
     
     signOutUser = () => {
-        console.log("In signOutUser");
+        console.log("sign out");
         signOut();
     }
     
     
-  render() {     
+  render() {
+      var info;
+
+      switch (this.state.status) {
+          case 'INITIAL':
+              info = (<div class="startInfoContainer">
+                        <span id="searchImg" class="glyphicon glyphicon-search"></span>
+                        <span id="searchImg" class="glyphicon glyphicon-film"></span>
+                        <p id="startInfo">Get started by searching for a<br/> movie title or theme.</p>
+                      </div>);
+              break;
+              
+          case 'LOADING':
+              info = <img id="loadImg" src="https://upload.wikimedia.org/wikipedia/commons/6/66/Loadingsome.gif"/>;
+              break;
+              
+          case 'DONE':
+              info = "";
+              break;
+      }
+      
       return (
         <div id="mainpage" class="nopadding">
             <div className="row nopadding" id="header">
@@ -80,6 +96,7 @@ class MainPage extends Component {
             </div>
             <div className="row">
                 <div className="col-sm-8 nopadding" id="movieListDiv">
+                    {info}
                     <Movies currentMovies = {this.state.movies} />
                 </div>
                 <div className="col-sm-4 nopadding" id="profilebar">

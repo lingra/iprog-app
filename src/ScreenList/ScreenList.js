@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import './ScreenList.css';
 import {modelInstance} from '../data/MovieModel';
 import { Link } from 'react-router-dom';
+import listimg from "../images/gradients2.jpg";
 
 
 class ScreenList extends Component {
 
   render() {
-      var MovieList = "";
-      var ListTitle = "";
+
+    //var MovieList = "";
+    //var ListTitle = "";
       /*movieList = this.state.movies.map((movie) => 
             <div className="col-sm-4 dishContainer" key={movie.imdbID}>
               <table className="image">
@@ -28,9 +30,65 @@ class ScreenList extends Component {
             </div>);
             */
       
-      
       return (
-          <div id="listViewPage">
+           <div className="container-fluid" id="profilepage">
+            <div className="row" id="header">
+                <div className="col-sm-4">
+                  <Link to="/main" id="titlelink">
+                      <p id="webpage-title">M(yFave)Db</p>
+                  </Link>
+                </div>
+            </div>
+           
+            <div className="col-sm-12">
+                <p className="pagetitle">My List</p>
+
+                    <div className="row">
+                        <div className="col-sm-3">
+                            <div id="container">
+                                <img src={listimg} alt="film"/>
+                                <button id="remove">-</button>
+                            </div>
+                            <p className="caption">Movie 1</p>
+                        </div>
+                              
+                        <div className="col-sm-3">          
+                            <div id="container">
+                                <img src={listimg} alt="film"/>
+                                <button id="remove">-</button>
+                            </div>
+                            <p className="caption">Movie 2</p>
+                        </div>
+
+                        <div className="col-sm-3">    
+                            <div id="container">
+                                <img src={listimg} alt="film"/>
+                                <button id="remove">-</button>
+                            </div>
+                            <p className="caption">Movie 3</p>
+                        </div>
+
+                        <div className="col-sm-3">    
+                            <div id="container">
+                                <img src={listimg} alt="film"/>
+                                <button id="remove">-</button>
+                            </div>
+                            <p className="caption">Movie 4</p>
+                        </div>
+
+                        <div className="col-sm-3">    
+                            <div id="container">
+                                <img src={listimg} alt="film"/>
+                                <button id="remove">-</button>
+                            </div>
+                            <p className="caption">Movie 5</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+    /*
+ <div id="listViewPage">
               <div className="row" id="header">
                   <div className="col-sm-8"></div>
                   <div className="col-sm-4">
@@ -51,6 +109,7 @@ class ScreenList extends Component {
                   </Link>
             </div>
         </div>
+    */
       );
   }
 }

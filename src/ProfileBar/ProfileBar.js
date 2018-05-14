@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import './ProfileBar.css';
 import {modelInstance} from '../data/MovieModel';
 import { Link } from 'react-router-dom';
-import profileImg from "../images/gradients1.jpg";
-import { database, toList, getUserID, getUserInfo, signOut, authentication } from "../firebase";
+import { database, getProfile, getUserLists } from "../firebase";
 
 
 class ProfileBar extends Component {
@@ -13,98 +12,143 @@ class ProfileBar extends Component {
         this.state = {
             name: "",
             image: "",
-            lists: "",
-            fetching: false
+            lists: [],
+            status: "",
+            //fetching: false
         };
         this.unsubscribe;
     }
     
     componentDidMount() {
-        console.log("Component did mount");
-        this.emmastest()
-    }
-    
-    emmastest = () => {
-        console.log("I Emmas testfunktion");
         this.setState({
             name: "",
             image: "",
-            fetching: true})
+            //fetching: true
+        })
         
+        var currentUser = localStorage.getItem('currentUser');
+        this.ref = getProfile(currentUser);
+        this.ref2 = getUserLists(currentUser);
+        if (currentUser) {
+            this.ref.on('value', snapshot => {
+                this.setUser(snapshot.val().username, snapshot.val().image);
+            })
+            this.ref2.on('value', snapshot => {
+                this.displayLists(snapshot.val());
+            })
+        } else {
+            this.setState({
+                status: 'ANONYMOUS'
+            });
+        }
+        
+        //Attach listener to unsubscribe, so that we can stop listening when component unmounts
+        /*
         this.unsubscribe = authentication.onAuthStateChanged((user) => {
             if (user) {
                 var currentUser = user.uid;
                 this.ref = database.ref('users/' + currentUser);
                 this.ref.on('value', snapshot => {
-                    this.setUser(snapshot.val().username, snapshot.val().image);
-                })
+                    try {
+                        this.setUser(snapshot.val().username, snapshot.val().image);
+                    }
+                    catch (e) {
+                        // If username and img not set in firebase
+                        this.setUser("", "");
+                    }
+                });
                 console.log("hämtat data")
             } else {
                 this.setState({
-                    name: "You must login to see your profile"
+                    status: 'ANONYMOUS'
                 });
                 console.log("Ingen inloggad");
             }
-        });
+        }); */
     }
-    
+  
     componentWillUnmount() {
         this.ref.off()
-        this.unsubscribe();
+        this.ref2.off()
+        //this.unsubscribe(); //Stop listening to user
+    }
+    
+    displayLists(obj) {
+        var lists = [];
+        for (var key in obj) {
+            var listobj = {};
+            listobj.listId = key;
+            
+            var listSpec = obj[key];
+            for (var item in listSpec) {
+                if (item === "title") {
+                    listobj.title = listSpec[item];
+                    lists.push(listobj);
+                }
+            }
+        }
+        this.setState({
+            lists: lists
+        });
+        console.log("statet", this.state.lists);
     }
     
     setUser(userName, userPic) {
         this.setState({
             name: userName,
             image: userPic,
-            fetching: false
+            status: 'USER',
+            //fetching: false
         })
     }
-
-/*
-    componentDidMount() {
-        this.setState({fetching: true});
-        console.log(database);
-        this.ref = database.ref('users/');
-        console.log("getUserID", getUserID());
-        console.log("getUserInfo", getUserInfo());
-        var userinfo = getUserInfo();
-        console.log("typeof", typeof(userinfo));
-        console.log(database.ref('users/'));
-        
-        this.setstate({
-            name: userinfo.
-        })
-        
-        this.ref.on('value', snapshot => {
-            this.mapToBuildings( database.toList(snapshot.val()))
-        })
-    }
-
-      getLists(lists) {
-          if (lists === undefined)
-              return undefined;
-          return lists.map(movie =>
-                <li key={lists.key}>
-                    <Link className='movie' to={`/lists/${movie.key}`}>
-                        {movie.title}
-                    </Link>
-                </li>
-            );
-      }
-
-      mapToLists(lists) {
-        this.setState({
-          lists: lists.filter(movie => movie !== undefined).sort(),
-          fetching: false
-        })
-      }
-      */
           
   render() {
-                         
-      var listname = "";
-      var loginbutton = "";
+      var profileImg;
+      var profileNm;
+      var listInfo;
+      var profileInf;
+      var fullList;
+      var listItem;
+      
+      switch (this.state.status) {
+          case 'USER':
+            if (this.state.name != "" && this.state.image != "Unknown") {
+                profileImg = <img id="profilePic" alt="Your profile picture" src={this.state.image}/>
+                profileNm = <p id="profileName">{this.state.name}</p>;
+            } else {
+                profileImg = (<div id="fakeProfile">
+                                <span id="fakeUser" class="glyphicon glyphicon-user"></span>
+                              </div>);
+                profileNm = <p id="profileName">{this.state.name}</p>;
+                profileInf =  (<div>
+                               <p id="#profileInf">To set your profile image - click on your username to go to your profile and edit.</p>
+                               </div>);
+            }
+            fullList = this.state.lists.map((item) => {
+                return <div className="profileListItem" id={item.listId}>{item.title}</div>;
+            });
+            listInfo = (<div>
+                            <span class="glyphicon glyphicon-list"></span><span id="title"> My lists</span>
+                             
+                            <div id="profileLists">
+                                {fullList}
+                            </div>
+                            <div>
+                                <Link to="/create">
+                                    <span className="glyphicon glyphicon-plus"></span><span id="title"> Add list</span> 
+                                </Link>
+                            </div>
+                           </div>);
+              break;
+              
+          case 'ANONYMOUS':
+              profileImg = (<div id="fakeProfile">
+                                <span id="fakeUser" class="glyphicon glyphicon-user"></span>
+                            </div>);
+              profileNm = <p id="loginWarning">You must sign in to view your profile.</p>;
+              profileInf = "";
+              break;
+      }
       
       return (
           <div id="ProfileBar">
@@ -112,8 +156,11 @@ class ProfileBar extends Component {
                 <div className="col-sm-1"></div>
                 <div className="col-sm-10">
                     <div className="profileInfo">
-                        <img id="profilePic" alt="Your profile pic" src={this.state.image}></img>
-                        <p id="profileName">{this.state.name}</p>
+                        {profileImg}
+                        <Link to="/profile" style={{textDecoration:'none'}}>
+                            {profileNm}
+                        </Link>
+                        {profileInf}
                     </div>
                 </div>
                 <div className="col-sm-1"></div>
@@ -122,15 +169,7 @@ class ProfileBar extends Component {
               <div className="row">
                   <div className="col-sm-1"></div>
                   <div className="col-sm-10">
-                      <p>My Lists</p>
-                      <div>
-                          {listname}
-                      </div>
-                      <div>
-                          <Link to="/">
-                              <span className="glyphicon glyphicon-plus"></span><p id="add-list-profile"> Add List</p> 
-                          </Link>
-                      </div>
+                      {listInfo}
                   </div>
                   <div className="col-sm-1"></div>
               </div>

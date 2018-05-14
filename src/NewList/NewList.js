@@ -35,7 +35,8 @@ class NewList extends Component {
             var movieId = currentList[i].id;
             listToSave.push(movieId);
         }
-        var userId = "OipdrBhSvuNgkqDapbIjAD5muKs2";
+        var currentUser = localStorage.getItem('currentUser');
+        var userId = currentUser;
         var listData = {
             author: userId,
             title: listTitle,
