@@ -63,32 +63,20 @@ class EditImage extends Component {
                     <p id="webpage-title">M(yFave)Db</p>
                 </Link>
                 
-<<<<<<< HEAD
                 <div className="col-sm-3"></div>
                 <div className="col-sm-6" id="formDiv">
                     <img src={image} id="profilePic" alt="Some profile Pic" />
                     <p id="formText">URL</p>
-=======
-                <div className="col-sm-4"></div>
-                <div className="col-sm-4" id="formDiv">
-                    <img src={image} id="profilePic" alt="Some profile Pic" />
-                    <p id="formText">Username</p>
->>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
                     <input id="userImage" className="formInput" type="text" />
                         
                     <p id="formText">Please check that your image works before submiting</p>
                     
                     <button onClick={() => this.getChangedInfo()} id="SubmitBtn">Submit</button>
-<<<<<<< HEAD
                     <Link to="/profile">
                         <button id="SaveBtn">Save and go back</button>
                     </Link>
                 </div>
                 <div className="col-sm-3"></div>
-=======
-                </div>
-                <div className="col-sm-4"></div>
->>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
             </div>
         </div>
       );

@@ -213,20 +213,12 @@ class ProfilePage extends Component {
                     <div className="col-sm-2">
                         <Link to="EditImage">
                             <div id="eBtn">
-<<<<<<< HEAD
                                 <button id="editImgBtn">Edit Image</button>
-=======
-                                <button id="editBtn">Edit Image</button>
->>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
                             </div>
                         </Link>
                         <Link to="EditProfile">
                             <div id="eBtn">
-<<<<<<< HEAD
                                 <button id="editTriBtn">Edit Info</button>
-=======
-                                <button id="editBtn">Edit Info</button>
->>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
                             </div>
                         </Link>
                     </div>
