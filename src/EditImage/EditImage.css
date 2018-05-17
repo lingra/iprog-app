@@ -97,6 +97,7 @@
     border: 2px solid white;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+<<<<<<< HEAD
 }
 
 #SaveBtn {
@@ -109,4 +110,6 @@
     border: 2px solid white;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+=======
+>>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
 }

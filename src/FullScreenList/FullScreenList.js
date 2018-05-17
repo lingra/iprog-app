@@ -2,11 +2,15 @@ import React, {Component} from 'react';
 import './FullScreenList.css';
 import {modelInstance} from '../data/MovieModel';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
 import { database, getList, getProfile } from '../firebase';
+=======
+>>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
 import listimg from "../images/gradients2.jpg";
 
 
 class ScreenList extends Component {
+<<<<<<< HEAD
     
     constructor(props) {
         super(props);
@@ -144,6 +148,30 @@ class ScreenList extends Component {
                 });
               break;
       }
+=======
+
+  render() {
+      
+      var test = (<div className="row">
+                      <div className="col-sm-1">
+                          <span id="movieNum">1</span>
+                      </div>
+                      <div className="col-sm-3">
+                        <table className="image">
+                            <tbody>
+                                <tr>
+                                    <td className="imgTdFs">
+                                        <img className="img" draggable="false" alt="hej" src={listimg}/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                      <div className="col-sm-8">
+                          3
+                      </div>
+                  </div>);
+>>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
       
       return (
            <div className="container-fluid" id="fullscreenlistpage">
@@ -158,6 +186,7 @@ class ScreenList extends Component {
             <div className="row">
                 <div className="row">
                     <div className="col-sm-3">
+<<<<<<< HEAD
                         <div class="authContainer">
                             <span id="authTitle">Author:</span><br/>
                             <span id="imgContainer">{img}</span>
@@ -169,6 +198,16 @@ class ScreenList extends Component {
                         {movieList}
                     </div>
                     <div className="col-sm-2">
+=======
+                        Author:
+                        Name
+                    </div>
+                    <div className="col-sm-8">
+                        <p className="pagetitle">My List</p>
+                        {test}
+                    </div>
+                    <div className="col-sm-1">
+>>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
                         Edit
                     </div>
                 </div>

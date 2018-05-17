@@ -50,6 +50,7 @@
     font-size: 15pt;
 }
 
+<<<<<<< HEAD
 .authContainer {
     text-align: center;
 }
@@ -126,6 +127,8 @@
     font-size: 16px;
 }
 
+=======
+>>>>>>> 855302a5816c346668928e54d6ecdda59c69eb1b
 /* width */
 ::-webkit-scrollbar {
     width: 15px;
