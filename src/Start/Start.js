@@ -5,11 +5,15 @@ import { Link } from 'react-router-dom';
 
 
 class Start extends Component {
-    setUser = () => {
-        var user = modelInstance.getCookie();
-        if (!user) {
-            modelInstance.setCookie();
-        }
+    
+    componentDidMount() {
+        // Clear all cookies for safety measure
+        modelInstance.removeCookie("user");
+        modelInstance.removeCookie("list");
+        modelInstance.removeCookie("edit");
+        
+        // Set cookie as guest
+        modelInstance.setUserCookie();
     }
 
   render() {
@@ -31,7 +35,7 @@ class Start extends Component {
                 </div>
                 <div class="col-sm-2">
                     <Link to="main">
-                        <button onClick={() => this.setUser()}id="browse" class="startpageBtn">Browse lists</button>
+                        <button id="browse" class="startpageBtn">Browse lists</button>
                     </Link>
                 </div>
                 <div class="col-sm-3"></div>

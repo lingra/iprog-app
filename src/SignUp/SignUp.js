@@ -57,7 +57,7 @@ class Signup extends Component {
         var userPassword1 = document.getElementById("signUpPassword1").value;
         var userPassword2 = document.getElementById("signUpPassword2").value;
         if (userPassword1 === userPassword2) {
-            signUp(userEmail, userPassword1).then(() => this.setUpUserInfo(username, modelInstance.getCookie())).catch((error) => this.displayError(error));
+            signUp(userEmail, userPassword1).then(() => this.setUpUserInfo(username, modelInstance.getCookie("user"))).catch((error) => this.displayError(error));
         }
         else {
             this.displayError("Passwords do not match. Please try again!");

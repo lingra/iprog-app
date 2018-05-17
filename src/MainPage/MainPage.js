@@ -12,15 +12,25 @@ class MainPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: ""
+            movies: "",
+            user: ""
         }; 
         this.searchInput = "";
     }
     
     componentDidMount() {
-        this.setState({
-            status: 'INITIAL'
-        });
+        var currentUser = modelInstance.getCookie("user");
+        if (currentUser === "guest") {
+            this.setState({
+                user: 'GUEST',
+                status: 'INITIAL'
+            });
+        } else {
+            this.setState({
+                user: 'USER',
+                status: 'INITIAL'
+            });
+        }
     }
     
     handleKeywordChange = (event) => {
@@ -36,19 +46,25 @@ class MainPage extends Component {
         })
         // Submit current input to retrieve API
         modelInstance.getAllMovies(this.searchInput).then(movies => {
-            console.log("Result from API", movies.Search);
             this.setState({
                 status: 'DONE',
                 movies: movies.Search
             })
         }).catch(() => {
+            this.setState({
+                status: 'ERROR'
+            });
         })
     }
     
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.handleKeywordChange(e);
-            this.submitKeyword();
+            
+            var currentInput = this.searchInput.trim()
+            if (currentInput) {
+                this.submitKeyword();
+            }
         }
     }
     
@@ -60,6 +76,16 @@ class MainPage extends Component {
     
   render() {
       var info;
+      var btn;
+      
+      switch(this.state.user) {
+          case 'GUEST':
+              btn = "in";
+              break;
+          case 'USER':
+              btn = "out";
+              break;
+      }
 
       switch (this.state.status) {
           case 'INITIAL':
@@ -77,6 +103,14 @@ class MainPage extends Component {
           case 'DONE':
               info = "";
               break;
+          case 'ERROR':
+              info = (<div id="apiErrorContainer">
+                        <div id="apiError">
+                           <p id="apiErrorTitle">Sorry!</p>
+                           <p id="apiErrorMsg">Something went wrong with the API. Please try again later!</p>
+                        </div>
+                      </div>);
+              break;
       }
       
       return (
@@ -90,7 +124,7 @@ class MainPage extends Component {
             </div>
                 <div className="col-sm-2 nopadding">
                     <Link to="/">
-                        <button onClick={() => this.signOutUser()} className="signOutBtn">Sign out</button>
+                        <button onClick={() => this.signOutUser()} className="signOutBtn">Sign {btn}</button>
                     </Link>
                 </div>
             </div>

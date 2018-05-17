@@ -30,27 +30,6 @@
     position: relative;
 }
 
-.plusBtn {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #ff80bf;
-    color: white;
-    font-size: 20px;
-    font-family: 'Roboto', sans-serif;
-    cursor: pointer;
-    border-radius: 50%;
-    display:block;
-    height: 50px;
-    width: 50px;
-    border: 2px solid white;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    text-align: center;
-}
-
 #formDiv {
     margin-top: 1vh; 
     margin-bottom: 5vh;
@@ -87,7 +66,20 @@
     margin-left: 55px;
 }
 
-#SubmitBtn {
+#ToProfileBtn {
+    margin-top: 15px;
+    font-size: 20px;
+    color: white;
+    background-color: #ffdf80;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 2px solid white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    margin-left: 30px;
+}
+
+#SubmitImgBtn {
     margin-top: 15px;
     font-size: 20px;
     color: white;
@@ -99,14 +91,10 @@
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
-#SaveBtn {
-    margin-top: 15px;
-    font-size: 20px;
+#goToProfile {
+    margin-top: 5px;
+    margin-left: 15px;
     color: white;
-    background-color: #ffdf80;
-    padding: 12px 24px;
-    border-radius: 12px;
-    border: 2px solid white;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 0 10px #FFFFFF;
+    font-size: 40pt;
 }

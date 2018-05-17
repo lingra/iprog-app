@@ -1,38 +1,124 @@
 const MovieModel = function () {
-    this.setCookie = function (userId) {
+    
+    //Handling cookies
+    this.setUserCookie = function(userId) {
         if (userId) {
             document.cookie = "currentUser=" + userId;
-        }
-        else {
+        } else {
             document.cookie = "currentUser=guest";
+        }
+    }
+    
+    this.setActiveListCookie = function(listId) {
+        document.cookie = "activeList=" + listId;
+    }
+    
+    this.setListEditCookie = function(listId, listTitle, list) {
+        document.cookie = "editList=" + listId + "*@*" + listTitle + "*@*" + list;
+        // *@* are used to split on when we want the separate information about listId, title and list
+    }
+    
+    this.setActiveMovieCookie = function(movieId, listId) {
+        document.cookie = "activeMovie=" + movieId + "*from*" + listId;
+        console.log(document.cookie);
+    }
+    
+    this.setCookie = function (str, userId, listId, listTitle, list) {
+        if (str === "user") {
+            if (userId) {
+                document.cookie = "currentUser=" + userId;
+            }
+            else {
+                document.cookie = "currentUser=guest";
+            }
+        } 
+        else if (str === "list") {
+            document.cookie = "activeList=" + listId;
+        }
+        else if (str === "edit") {
+            document.cookie = "editList=" + listId + "*@*" + listTitle + "*@*" + list;
         }
     console.log("Current cookies: ", document.cookie);
     }
 
-    this.getCookie = function() {
+    this.getCookie = function(str) {
         var allCookies = document.cookie.split("; ");
         for (var i = 0; i < allCookies.length; i++) {
             var currentCookie = allCookies[i];
-
-            var userString = "currentUser=";
-            if (currentCookie.indexOf(userString) === 0) {
-                return currentCookie.substring(userString.length, currentCookie.length);
+            if (str === "user") {
+                var userString = "currentUser=";
+                if (currentCookie.indexOf(userString) === 0) {
+                    return currentCookie.substring(userString.length, currentCookie.length);
+                }
+            }
+            else if (str === "list") {
+                var listString = "activeList=";
+                if (currentCookie.indexOf(listString) === 0) {
+                    return currentCookie.substring(listString.length, currentCookie.length);
+                }
+            }
+            else if (str === "edit") {
+                var editString = "editList=";
+                if (currentCookie.indexOf(editString) === 0) {
+                    var cookieData = currentCookie.substring(editString.length, currentCookie.length).split('*@*');
+                    var cookieObj = {};
+                    cookieObj.listId = cookieData[0];
+                    cookieObj.listTitle = cookieData[1];
+                    cookieObj.list = cookieData[2];
+                    return cookieObj;
+                }
+            }
+            else if (str === "movie") {
+                var movieString = "activeMovie=";
+                if (currentCookie.indexOf(movieString) === 0) {
+                    var cookieData = currentCookie.substring(movieString.length, currentCookie.length).split('*from*');
+                    var cookieObj = {};
+                    cookieObj.movie = cookieData[0];
+                    cookieObj.fromList = cookieData[1];
+                    return cookieObj;
+                }
             }
         }
         return null;
     }
 
-    this.removeCookie = function() {
+    this.removeCookie = function(str) {
         var allCookies = document.cookie.split("; ");
 
         for (var i = 0; i < allCookies.length; i++) {
             var currentCookie = allCookies[i];
-            var userString = "currentUser=";
-
-            if (currentCookie.indexOf(userString) === 0) {
-                var cookieToDelete = userString;
-                document.cookie = cookieToDelete + "; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-                break;
+            
+            if (str === "user") {
+                var userString = "currentUser=";
+                if (currentCookie.indexOf(userString) === 0) {
+                    var cookieToDelete = userString;
+                    document.cookie = cookieToDelete + "; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    break;
+                }
+            }
+            else if (str === "list") {
+                var listString = "activeList=";
+                if (currentCookie.indexOf(listString) === 0) {
+                    var cookieToDelete = listString;
+                    document.cookie = cookieToDelete + "; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    break;
+                }
+            }
+            else if (str === "edit") {
+                var editString = "editList=";
+                if (currentCookie.indexOf(editString) === 0) {
+                    var cookieToDelete = editString;
+                    document.cookie = cookieToDelete + "; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    break;
+                }
+            }
+            else if (str === "movie") {
+                var movieString = "activeMovie=";
+                if (currentCookie.indexOf(movieString) === 0) {
+                    var cookieToDelete = movieString;
+                    document.cookie = cookieToDelete + "; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    break;
+                }
             }
         }
         console.log("Current cookies: ", document.cookie);
@@ -53,13 +139,12 @@ const MovieModel = function () {
         }
         
         var searchUrl = url + searchword;
-        console.log(searchUrl);
 
         return fetch(searchUrl)
             .then(processResponse)
             .catch(handleError)
     }
-
+    
     this.getMovie = function (id) {
         // Get the right URL form API
         var movieURL = 'https://www.omdbapi.com/?i=' + id + '&apikey=f604b64c';
@@ -100,8 +185,6 @@ const MovieModel = function () {
     const notifyObservers = function () {
         observers.forEach(o => o.update());
     };
-        
-
 
 };
 

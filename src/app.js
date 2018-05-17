@@ -13,6 +13,7 @@ import ProfileBar from './ProfileBar/ProfileBar';
 import ScreenList from './ScreenList/ScreenList';
 import CreateList from './CreateList/CreateList';
 import FullScreenList from './FullScreenList/FullScreenList';
+import MovieInfo from './MovieInfo/MovieInfo';
 
 class App extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class App extends Component {
             <Route path="/EditImage" render={() => <EditImage model={modelInstance}/>}/> 
             <Route path="/create" render={() => <CreateList model={modelInstance}/>}/>
             <Route path="/fullscreen" render={() => <FullScreenList/>}/>
+            <Route path="/viewMovie" render={() => <MovieInfo model={modelInstance}/>}/>
         </div>
     );
   }

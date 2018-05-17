@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import './FullScreenList.css';
 import {modelInstance} from '../data/MovieModel';
-import { Link } from 'react-router-dom';
-import { database, getList, getProfile } from '../firebase';
-import listimg from "../images/gradients2.jpg";
-
+import { Link, Redirect } from 'react-router-dom';
+import { database, getList, getProfile, deleteMovieList } from '../firebase';
 
 class ScreenList extends Component {
     
@@ -15,25 +13,31 @@ class ScreenList extends Component {
             image: "",
             listTitle: "",
             movieList: [],
-            status: "LOADING"
+            status: "",
+            done: false
         };
     }
     
     componentDidMount() {
-        this.getListFromDb('-LCTQGMLb_En_uarBhtH');
+        var currentList = modelInstance.getCookie("list");
+        if (currentList) {
+            this.getListFromDb(currentList);
+        }
         this.setState({
             name: "",
             image: "",
             listTitle: "",
             movieList: [],
-            status: "LOADING"
+            status: "LOADING",
+            done: false,
+            to: ""
         })
-        this.movieList = [];
     }
     
     componentWillUnmount() {
         this.ref.off();
         this.ref2.off();
+        modelInstance.removeCookie("list");
     }
     
     getListFromDb = (listId) => {
@@ -45,33 +49,51 @@ class ScreenList extends Component {
             this.getMoviesFromAPI(listArray);
         });
     }
-    
+
     getAuthor = (author) => {
         this.ref2 = getProfile(author);
         this.ref2.on('value', snapshot => {
             this.displayAuthor(snapshot.val().username, snapshot.val().image);
         })
     }
-    
+
     getMoviesFromAPI = (idArray) => {
         var arrayLength = idArray.length;
-        for (var i = 0; i < arrayLength; i++){
-            var currentMovie = modelInstance.getMovie(idArray[i]).then(movie => {
-                this.storeMovie(movie.imdbID, movie.Title, movie.Poster, movie.Plot);
+        var apiCallsRemaining = arrayLength;
+        for (var i = 0; i < arrayLength; i++) {
+            modelInstance.getMovie(idArray[i]).then((movie) => {
+                var movieObj = {};
+                movieObj.id = movie.imdbID;
+                movieObj.title = movie.Title;
+                movieObj.img = movie.Poster;
+                movieObj.info = movie.Plot;
+                this.state.movieList.push(movieObj);
+                apiCallsRemaining -= 1;
+                if (apiCallsRemaining <= 0) {
+                    this.sortList(idArray);
+                }
+            }).catch(() => {
+                this.setState({
+                    status: "ERROR"
+                });
             });
         }
-        this.setState({
-            status: "DONE"
-        });
     }
     
-    storeMovie = (id, title, poster, plot) => {
-        var movieObj = {};
-        movieObj.id = id;
-        movieObj.title = title;
-        movieObj.img = poster;
-        movieObj.info = plot;
-        this.state.movieList.push(movieObj);
+    sortList = (correctArray) => {
+        var apiArray = this.state.movieList;
+        var sortedArray = [];
+        for (var item in correctArray) {
+            for (var i in apiArray) {
+                if (correctArray[item] === apiArray[i].id) {
+                    sortedArray.push(apiArray[i]);
+                }
+            }
+        }
+        this.setState({
+            movieList: sortedArray,
+            status: 'DONE'
+        });
     }
     
     displayAuthor = (username, img) => {
@@ -92,6 +114,65 @@ class ScreenList extends Component {
            alert("Something went wrong! Please try again! \n" + error.message); 
         } else {
             alert("Something went wrong! Please try again! \n");
+        }
+    }
+    
+    editList = () => {
+        var currentList = modelInstance.getCookie("list");
+        var currentMovies = [];
+        for (var i = 0; i < this.state.movieList.length; i++) {
+            var movieObj = {};
+            movieObj.id = this.state.movieList[i].id;
+            movieObj.title = this.state.movieList[i].title;
+            currentMovies.push(movieObj);
+        }
+        var title = this.state.listTitle;
+        var stringList = JSON.stringify(currentMovies);
+        modelInstance.setListEditCookie(currentList, title, stringList);
+        this.setState({
+            to: "edit"
+        });
+        this.redirect();
+    }
+    
+    removeList = () => {
+        //Stop listening to database (to avoid display of errors)
+        this.ref.off();
+        this.ref2.off();
+        
+        // Get current list
+        var currentList = modelInstance.getCookie("list");
+        deleteMovieList(currentList);
+        
+        // Delete list
+        modelInstance.removeCookie("list");
+        this.setState({
+            to: "delete"
+        });
+        this.redirect();
+    }
+    
+    setMovie = (e) => {
+        console.log("här i set movie");
+        var currentList = modelInstance.getCookie("list");
+        modelInstance.setActiveMovieCookie(e.target.id, currentList);
+    }
+
+    redirect = () =>  {
+        this.setState({
+            done: true
+        });
+    }
+    
+    renderRedirect = () => {
+        // If done with list redirect back to main or fullscreen list
+        if (this.state.done) {
+            if (this.state.to === "edit") {
+                return <Redirect to='/create'></Redirect>
+            }
+            else if (this.state.to === "delete") {
+                return <Redirect to='/main'></Redirect>
+            }
         }
     }
     
@@ -116,7 +197,9 @@ class ScreenList extends Component {
               break;
           case 'DONE':
               movieList = this.state.movieList.map((movie, index) => {
-                  var movieImg = <img className="img" draggable="false" alt="MovieImg" src={movie.img}/>;
+                  var movieImg = (<Link to="/viewMovie">
+                                    <img className="img" id={movie.id} alt={movie.title} src={movie.img} onClick={(e) => this.setMovie(e)}/>
+                                 </Link>);
                   var movieTitle = <p className="movieTitle" id={movie.id}>{movie.title}</p>;
                   var movieInfo = <p className="movieInfo">{movie.info}</p>;
                   var moviePlacement = index + 1;
@@ -142,6 +225,14 @@ class ScreenList extends Component {
                           </div>
                       </div>);
                 });
+              break;
+          case 'ERROR':
+              movieList = (<div id="apiErrorContainer">
+                              <div id="apiError">
+                                 <p id="apiErrorTitle">Sorry!</p>
+                                 <p id="apiErrorMsg">Something went wrong with the API. Please try again later!</p>
+                              </div>
+                           </div>);
               break;
       }
       
@@ -169,9 +260,11 @@ class ScreenList extends Component {
                         {movieList}
                     </div>
                     <div className="col-sm-2">
-                        Edit
+                        <button id="editBtn" onClick={() => this.editList()}>Edit</button>
+                        <button id="editBtn" onClick={() => this.removeList()}>Remove</button>
                     </div>
                 </div>
+                {this.renderRedirect()}
             </div>
         </div>
       );
@@ -179,4 +272,3 @@ class ScreenList extends Component {
 }
 
 export default ScreenList;
-

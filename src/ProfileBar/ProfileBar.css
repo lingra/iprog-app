@@ -69,3 +69,7 @@
     font-weight: bold;
     color: #828282;
 }
+
+.profileListItem:hover {
+    cursor: pointer;
+}

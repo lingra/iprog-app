@@ -1,11 +1,28 @@
 #ProfilePage {
     background-image: url(../images/gradients3.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 100vh;
     overflow: auto;
 }
 
-.profileInfo {
+.profileInfon {
 	padding-top: 20px;
+}
+
+#profilePic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    text-align: center;
+    display: block;
+    margin: auto;
+}
+
+#profilePic img {
+    margin-left: auto;
+	margin-right: auto;
+	display: block;
 }
 
 #editImgBtn {
@@ -39,7 +56,7 @@
 	padding-top: 20px;
 }
 
-#profileNm, h4 {
+#profileName, h4 {
 	font-weight: bold;
 	text-align: center;
 	padding-bottom: 10px;
@@ -67,12 +84,41 @@
     margin-top: 15px;
 }
 
-#imgTd {
+.imgTd {
     width: 170px;
     height: 200px;
     margin: 10px;
     border-radius: 15px;
-    overflow:  auto;
+    overflow-y: hidden;
+}
+
+.listImgMissing {
+    width: 170px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 15px;
+    /*overflow-y: hidden;*/
+    background-color: rgba(255,255,255,0.4);
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.addList {
+    width: 170px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 15px;
+    overflow-y: hidden;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.posterTitle {
+    padding-top: 50px;
+    color: grey;
+    opacity: 0.8;
 }
 
 .bottom-center {
@@ -80,12 +126,12 @@
     font-size: 20px;
     position: absolute;
     bottom: 0px;
-    right: 0px;
+    margin: 10px;
     background-color: rgba(0,0,0,0.5);
     color: white;
     padding-left: 20px;
     padding-right: 20px;
-    width: 100%;
+    width: 170px;
     text-align: center;
 
 }
@@ -95,6 +141,12 @@
     color: white;
     text-shadow: 0 0 10px #FFFFFF;
     font-size: 15pt;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
 }
 
 /* width */

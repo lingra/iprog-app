@@ -16,6 +16,12 @@ class CreateList extends Component {
     }
     
     componentDidMount() {
+        var currentUser = modelInstance.getCookie("user");
+        // Guest user, block interaction with page
+        if (currentUser === "guest") {
+            var showError = document.getElementById("loginErrorContainer");
+            showError.style.display = 'block';
+        }
         this.setState({
             status: 'INITIAL'
         });
@@ -44,13 +50,20 @@ class CreateList extends Component {
                 movies: movies.Search
             })
         }).catch(() => {
+            this.setState({
+                status: 'ERROR'
+            });
         })
     }
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.handleKeywordChange(e);
-            this.submitKeyword();
+            
+            var currentInput = this.searchInput.trim()
+            if (currentInput) {
+                this.submitKeyword();
+            }
         }
     }
   
@@ -73,10 +86,23 @@ class CreateList extends Component {
           case 'DONE':
               info = "";
               break;
+              
+          case 'ERROR':
+              info = (<div id="apiErrorContainer">
+                        <div id="apiError">
+                           <p id="apiErrorTitle">Sorry!</p>
+                           <p id="apiErrorMsg">Something went wrong with the API. Please try again later!</p>
+                        </div>
+                      </div>);
+              break;
       }
       return (
         <div id="addListPage" class="nopadding">
             <div className="row">
+                <div id="loginErrorContainer">
+                    <p id="loginErrorTitle">Uh oh!</p>
+                    <p id="loginErrorParagraph">How did you end up here? Only signed in users can create and edit lists.</p>
+                </div>
                 <div className="col-sm-4 nopadding" id="na">
                     <NewList/>
                 </div>

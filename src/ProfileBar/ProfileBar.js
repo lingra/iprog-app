@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './ProfileBar.css';
 import {modelInstance} from '../data/MovieModel';
-import { Link } from 'react-router-dom';
-import { database, getProfile, getUserLists } from "../firebase";
+import { Link, Redirect } from 'react-router-dom';
+import { database, getProfilePic, getUsername, getUserLists } from "../firebase";
 
 
 class ProfileBar extends Component {
@@ -14,64 +14,45 @@ class ProfileBar extends Component {
             image: "",
             lists: [],
             status: "",
-            //fetching: false
+            visit: false
         };
-        //this.unsubscribe;
     }
     
     componentDidMount() {
         this.setState({
             name: "",
             image: "",
-            //fetching: true
+            visit: false
         })
         
-        var currentUser = modelInstance.getCookie();
-        console.log("cu", currentUser);
-        this.ref = getProfile(currentUser);
-        this.ref2 = getUserLists(currentUser);
-        if (currentUser !== "guest") {
-            this.ref.on('value', snapshot => {
-                this.setUser(snapshot.val().username, snapshot.val().image);
-            })
-            this.ref2.on('value', snapshot => {
-                this.displayLists(snapshot.val());
-            })
-        } else {
-            this.setState({
-                status: 'ANONYMOUS'
-            });
-        }
+        var currentUser = modelInstance.getCookie("user");
         
-        //Attach listener to unsubscribe, so that we can stop listening when component unmounts
-        /*
-        this.unsubscribe = authentication.onAuthStateChanged((user) => {
-            if (user) {
-                var currentUser = user.uid;
-                this.ref = database.ref('users/' + currentUser);
-                this.ref.on('value', snapshot => {
-                    try {
-                        this.setUser(snapshot.val().username, snapshot.val().image);
-                    }
-                    catch (e) {
-                        // If username and img not set in firebase
-                        this.setUser("", "");
-                    }
+        this.ref1 = getUsername(currentUser);
+        this.ref2 = getProfilePic(currentUser);
+        this.ref3 = getUserLists(currentUser);
+        if (currentUser) {
+            if (currentUser !== "guest") {
+                this.ref1.on('value', snapshot => {
+                    this.setUsername(snapshot.val());
+                })
+                this.ref2.on('value', snapshot => {
+                    this.setProfilePic(snapshot.val());
                 });
-                console.log("hämtat data")
+                this.ref3.on('value', snapshot => {
+                    this.displayLists(snapshot.val());
+                })
             } else {
                 this.setState({
                     status: 'ANONYMOUS'
                 });
-                console.log("Ingen inloggad");
             }
-        }); */
+        }
     }
   
     componentWillUnmount() {
-        this.ref.off()
+        this.ref1.off()
         this.ref2.off()
-        //this.unsubscribe(); //Stop listening to user
+        this.ref3.off()
     }
     
     displayLists(obj) {
@@ -91,16 +72,48 @@ class ProfileBar extends Component {
         this.setState({
             lists: lists
         });
-        console.log("statet", this.state.lists);
     }
     
+    setUsername(username) {
+        this.setState({
+            name: username,
+            status: 'USER'
+        });
+    }
+    
+    setProfilePic(img) {
+        this.setState({
+            image: img
+        });
+    }
+    
+    /*
     setUser(userName, userPic) {
         this.setState({
             name: userName,
             image: userPic,
             status: 'USER',
-            //fetching: false
         })
+    }
+    */
+    
+    fullscreenList = (e) => {
+        modelInstance.removeCookie("list");
+        modelInstance.setActiveListCookie(e.target.id);
+        this.redirect();
+    }
+    
+    redirect = () => {
+        this.setState({
+            visit: true
+        });
+    }
+    
+    renderRedirect = () => {
+        // If visit list true redirect to fullscreen
+        if (this.state.visit) {
+            return <Redirect to='/fullscreen'></Redirect>
+        }
     }
           
   render() {
@@ -130,7 +143,7 @@ class ProfileBar extends Component {
                                </div>);
             }
             fullList = this.state.lists.map((item) => {
-                return <div className="profileListItem" id={item.listId}>{item.title}</div>;
+                return <div className="profileListItem" onClick={(e) => this.fullscreenList(e)} id={item.listId}>{item.title}</div>;
             });
             listInfo = (<div>
                             <span class="glyphicon glyphicon-list"></span><span id="title"> My lists</span>
@@ -175,6 +188,7 @@ class ProfileBar extends Component {
                       {listInfo}
                   </div>
                   <div className="col-sm-1"></div>
+                  {this.renderRedirect()}
               </div>
             </div>
       );

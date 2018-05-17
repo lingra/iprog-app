@@ -1,51 +1,105 @@
 import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import './NewList.css';
-import { database, saveMovieList } from "../firebase";
+import {modelInstance} from '../data/MovieModel';
+import { database, saveMovieList, updateMovieList } from "../firebase";
 
 class NewList extends Component {
 
   constructor(props) {
         super(props);
         this.state = {
+            status: "",
             msg: "",
             movieList: [],
             done: false
         }; 
+      this.listTitle = "";
     }
 
     componentDidMount() {
-        this.setState({
-            msg: "",
-            done: false
-        });
+        var editList = modelInstance.getCookie("edit");
+        if (editList) {
+            this.loadListTitle(editList.listTitle);
+            this.setState({
+                status: "EDIT",
+                msg: "",
+                done: false,
+                movieList: JSON.parse(editList.list)
+            });
+        } else {
+            this.setState({
+                status: "CREATE",
+                msg: "",
+                done: false,
+            });
+        }
     }
     
-    redirect = () => {
-        this.setState({
-            done: true
-        });
+    componentWillUnmount() {
+        modelInstance.removeCookie("edit");
     }
     
     saveList = () => {
         var listTitle = document.getElementById("listTitle").value;
-        var currentList = this.state.movieList;
-        var listToSave = [];
-        for (var i = 0; i < currentList.length; i++) {
-            var movieId = currentList[i].id;
-            listToSave.push(movieId);
+        if (listTitle.trim() === "") {
+            this.setState({
+                msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You forgot to set a title for your list!</span></div>
+            });
+        } else {
+            var currentList = this.state.movieList;
+            var listToSave = [];
+            for (var i = 0; i < currentList.length; i++) {
+                var movieId = currentList[i].id;
+                listToSave.push(movieId);
+            }
+            var currentUser = modelInstance.getCookie("user");
+            var userId = currentUser;
+            var listData = {
+                author: userId,
+                title: listTitle,
+                list: JSON.stringify(listToSave)
+            }
+            var redirect = this.redirect();
+            saveMovieList(listData).then(function(redirect){}).catch(function(error){
+                alert("Something went wrong! Please try again later! \n" + error);
+            });
         }
-        var currentUser = localStorage.getItem('currentUser');
-        var userId = currentUser;
-        var listData = {
-            author: userId,
-            title: listTitle,
-            list: JSON.stringify(listToSave)
+    }
+    
+    loadListTitle = (title) => {
+        var listTitle = document.getElementById("listTitle");
+        listTitle.value = title;
+        
+    }
+    
+    updateList = () => {
+        var listTitle = document.getElementById("listTitle").value;
+        if (listTitle.trim() === "") {
+            this.setState({
+                msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You forgot to set a title for your list!</span></div>
+            });
+        } else {
+            var currentList = this.state.movieList;
+            var listToSave = [];
+            for (var i = 0; i < currentList.length; i++) {
+                var movieId = currentList[i].id;
+                listToSave.push(movieId);
+            }
+            var currentUser = modelInstance.getCookie("user");
+            var userId = currentUser;
+            var listData = {
+                title: listTitle,
+                list: JSON.stringify(listToSave)
+            }
+            var redirect = this.redirect();
+            var editList = modelInstance.getCookie("edit");
+            var listKey = editList.listId;
+            modelInstance.setCookie("list", null, listKey);
+            updateMovieList(listKey, listData).then(function(redirect){}).catch(function(error){
+                alert("Something went wrong! Please try again later! \n" + error);
+            });
         }
-        var redirect = this.redirect();
-        saveMovieList(listData).then(function(redirect){}).catch(function(error){
-            alert("Something went wrong! Please try again later! \n" + error);
-        });
     }
     
     redirect = () =>  {
@@ -55,9 +109,14 @@ class NewList extends Component {
     }
     
     renderRedirect = () => {
-        // If done with list redirect back to main
+        // If done with list redirect back to main or fullscreen list
         if (this.state.done) {
-            return <Redirect to='/main'></Redirect>
+            if (this.state.status === "CREATE") {
+                return <Redirect to='/main'></Redirect>
+            }
+            if (this.state.status === "EDIT") {
+                return <Redirect to='/fullscreen'></Redirect>
+            }
         }
     }
 
@@ -84,20 +143,27 @@ class NewList extends Component {
             delete movieObj.type;
             
             // Check if movie already in list
-            var result = this.isMovieInListAlready(movieObj.id);
-            if (result == false) {
-                let {movieList} = this.state;
-                movieList.push(movieObj);
-                
-                // Force rerender after new item pushed to array
-                this.setState({ 
-                    movieList,
-                    msg: ""
-                    });
-            } else {
+            var currList = this.state.movieList;
+            if (currList.length + 1 > 10) {
                 this.setState({
-                    msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You have already added this movie to your list!</span></div>
+                    msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> Lists are limited to 10 items.</span></div>
                 });
+            } else {
+                var result = this.isMovieInListAlready(movieObj.id);
+                if (result == false) {
+                    let {movieList} = this.state;
+                    movieList.push(movieObj);
+
+                    // Force rerender after new item pushed to array
+                    this.setState({ 
+                        movieList,
+                        msg: ""
+                        });
+                } else {
+                    this.setState({
+                        msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You have already added this movie to your list!</span></div>
+                    });
+                }
             }
         }
     }
@@ -107,6 +173,9 @@ class NewList extends Component {
         const data = e.dataTransfer.getData("text");
         var movieObj = JSON.parse(data);
         if (movieObj.type === "list") {
+            // Remove key type, not necessary beyond this point
+            delete movieObj.type;
+            
             var droppedMovieIndex = this.getIndexOfObject(movieObj.id);
             var currentMovieIndex = this.getIndexOfObject(e.target.id);
             let {movieList} = this.state;
@@ -147,6 +216,16 @@ class NewList extends Component {
     }
     
     render() {
+        var saveBtn;
+        switch(this.state.status) {
+            case 'EDIT':
+                saveBtn = <button id="saveList" onClick={() => this.updateList()}>Update!</button>;
+                break;
+            case 'CREATE':
+                saveBtn = <button id="saveList" onClick={() => this.saveList()}>Save!</button>;
+                break;
+        }
+        
      return (      
         <div>
             <input type="text" className="setListName" id="listTitle" placeholder="Set your list name here" onDrop={(e) => this.handler(e)} onDragOver={(e) => this.handler(e)}/>
@@ -169,7 +248,7 @@ class NewList extends Component {
                 </ol>
             </div>
             <div className="addContainer">
-                <button id="saveList" onClick={() => this.saveList()}>Save!</button>
+                {saveBtn} {/*<button id="saveList" onClick={() => this.saveList()}>Save!</button>*/}
             </div>
             {this.renderRedirect()}
         </div>);

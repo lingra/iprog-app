@@ -33,7 +33,9 @@
     font-family: 'Faster One', sans-serif;
     color: white;
 	text-shadow: 0 0 10px #FFFFFF;
-	font-size: 60pt;
+    word-wrap: break-word;
+    line-height: 80%;
+	font-size: 40pt;
 }
 
 .imgTdFs img {
@@ -126,6 +128,20 @@
     font-size: 16px;
 }
 
+#editBtn {
+    font-family: 'Roboto', sans-serif;
+    margin-top: 10px;
+    margin-right: 5px;
+    font-size: 20px;
+    color: white;
+    background-color: rgb(255, 128, 191);
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 2px solid white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 15px;
@@ -138,4 +154,31 @@
 ::-webkit-scrollbar-thumb {
     background: rgba(224, 109, 104, 0.3); 
     border-radius: 7px;
+}
+
+#apiError {
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(255, 255, 255, 0.3);
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+#apiErrorTitle {
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+    line-height: 90%;
+    padding-top: 130px;
+    padding-bottom: 0px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+#apiErrorMsg {
+    display: inline-block;
+    font-size: 20px;
+    width: 350px;
 }
