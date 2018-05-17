@@ -51,23 +51,13 @@ class Signup extends Component {
         }
     }
     
-    /* NOTE! Function waitForLocalStorage is obtained from https://gist.github.com/moimikey/07501755bcba3aa409b0 */
-    waitForLocalStorage = (key, cb, timer) => {
-      if (!localStorage.getItem(key)) return (timer = setTimeout(this.waitForLocalStorage.bind(null, key), 100))
-      clearTimeout(timer);
-      if (typeof cb !== 'function') return localStorage.getItem(key)
-      return cb(localStorage.getItem(key))
-    }
-    
     getSignUpInfo = () => {
         var username = document.getElementById("signUpUser").value;
         var userEmail = document.getElementById("signUpEmail").value;
         var userPassword1 = document.getElementById("signUpPassword1").value;
         var userPassword2 = document.getElementById("signUpPassword2").value;
         if (userPassword1 === userPassword2) {
-            signUp(userEmail, userPassword1).catch((error) => this.displayError(error));
-            /* NOTE! Code is based on waitForLocalStorage, obtained from https://gist.github.com/moimikey/07501755bcba3aa409b0 */
-            this.waitForLocalStorage('currentUser', (value) => this.setUpUserInfo(username, value));
+            signUp(userEmail, userPassword1).then(() => this.setUpUserInfo(username, modelInstance.getCookie())).catch((error) => this.displayError(error));
         }
         else {
             this.displayError("Passwords do not match. Please try again!");

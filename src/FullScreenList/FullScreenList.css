@@ -1,0 +1,141 @@
+#fullscreenlistpage {
+    background-image: url(../images/gradients1.jpg);
+    height: 100vh;
+    overflow: auto;
+}
+
+#webpage-title {
+    font-family: 'Faster One', sans-serif;
+    text-align: center;
+    color: white;
+	text-shadow: 0 0 10px #FFFFFF;
+	font-size: 30pt;
+	margin-top: 1vh;
+    padding-right: 60px;
+}
+
+#header {
+    background-color: rgba(255, 224, 179, 0.5);
+    height: 12vh;
+}
+
+.pagetitle {
+    text-align: left;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-size: 35px;
+    margin-bottom: 2px;
+    margin-left: 55px;
+    padding-bottom: 3%;
+}
+
+#movieNum {
+    font-family: 'Faster One', sans-serif;
+    color: white;
+	text-shadow: 0 0 10px #FFFFFF;
+	font-size: 60pt;
+}
+
+.imgTdFs img {
+    width: 120px;
+    height: 180px;
+    margin: 10px;
+    border-radius: 15px;
+}
+
+#returnHome {
+    margin-top: 5px;
+    color: white;
+    text-shadow: 0 0 10px #FFFFFF;
+    font-size: 15pt;
+}
+
+.authContainer {
+    text-align: center;
+}
+
+#authTitle {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+#imgContainer {
+    text-align: center;
+}
+
+#fs-fakeProfile {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background-color: grey;
+    border-radius: 50%;
+    margin-top: 10px;
+    opacity: 0.15;
+}
+
+#fs-fakeUser {
+    color: white;
+    opacity: 0.7;
+    margin-top: 10px;
+    font-size: 110px;
+}
+
+#author {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    margin-bottom: 0px;
+    color: black;
+}
+
+#load {
+    width: 200px;
+    margin-left: 100px;
+    margin-top: 150px;
+}
+
+.listTitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 50px;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    padding-bottom: 2px;
+    margin-bottom: 0px;
+}
+
+.movieTitle {
+    width: 450px;
+    margin-left: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    padding-bottom: 2px;
+    margin-bottom: 0px;
+}
+
+.movieInfo {
+    width: 450px;
+    margin-left: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(224, 109, 104, 0.3); 
+    border-radius: 7px;
+}

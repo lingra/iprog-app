@@ -1,4 +1,42 @@
 const MovieModel = function () {
+    this.setCookie = function (userId) {
+        if (userId) {
+            document.cookie = "currentUser=" + userId;
+        }
+        else {
+            document.cookie = "currentUser=guest";
+        }
+    console.log("Current cookies: ", document.cookie);
+    }
+
+    this.getCookie = function() {
+        var allCookies = document.cookie.split("; ");
+        for (var i = 0; i < allCookies.length; i++) {
+            var currentCookie = allCookies[i];
+
+            var userString = "currentUser=";
+            if (currentCookie.indexOf(userString) === 0) {
+                return currentCookie.substring(userString.length, currentCookie.length);
+            }
+        }
+        return null;
+    }
+
+    this.removeCookie = function() {
+        var allCookies = document.cookie.split("; ");
+
+        for (var i = 0; i < allCookies.length; i++) {
+            var currentCookie = allCookies[i];
+            var userString = "currentUser=";
+
+            if (currentCookie.indexOf(userString) === 0) {
+                var cookieToDelete = userString;
+                document.cookie = cookieToDelete + "; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                break;
+            }
+        }
+        console.log("Current cookies: ", document.cookie);
+    }
 
     // Variables
     var observers = [];
@@ -30,7 +68,6 @@ const MovieModel = function () {
             .then(processResponse)
             .catch(handleError)
     }
-
     
     // API Helper methods
     const processResponse = function (response) {
@@ -64,72 +101,7 @@ const MovieModel = function () {
         observers.forEach(o => o.update());
     };
         
-    //Firebase
-    /*
-    var firebase = require('firebase');
-    
-        //Init
-    var config = {
-        apiKey: "AIzaSyDZ-3B51anSKg6QcWddRA8dYlXHmcK0Uoo",
-        authDomain: "iprog-myfavedb.firebaseapp.com",
-        databaseURL: "https://iprog-myfavedb.firebaseio.com",
-        projectId: "iprog-myfavedb",
-        storageBucket: "iprog-myfavedb.appspot.com",
-        messagingSenderId: "688175599939"
-    };
-    firebase.initializeApp(config);
-    
-    this.signUp = function(email, password) {
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-            });
-        }
-    
-    this.signOut = function() {
-        firebase.auth().signOut().then(function() {
-            //If succesful redirect to start
-            // Sign-out successful.
-            console.log("Sign out succesfull")
-        }).catch(function(error) {
-            console.log("Something went wrong with sign out")
-            //Print error to console? Or alert?
-            // An error happened.
-        });
-    }
-    
-    this.getUserID = function() {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                this.userID = user.uid;
-                console.log("inloggad", this.userID);
-            }
-            else {
-                console.log("no user signed in");
-                this.userID = null;
-                console.log("ej", this.userID);
-            }
-        });
-        console.log("efterloop", this.userID);
-        return this.userID;
-        
-    }
-    
-    this.getUserInfo = function() {
-        var childData;
-        var userRef = firebase.database().ref('users');
-        userRef.on('value', function(snapshot) {
-            console.log("hej");
-            snapshot.forEach(function(childSnapshot) {
-                console.log(childSnapshot.val());
-                var childData = childSnapshot.val();
-                console.log(childData);
-            });
-        });
-        console.log(childData);
-        return childData;
-    }*/
+
 
 };
 

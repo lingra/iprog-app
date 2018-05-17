@@ -7,10 +7,12 @@ import SignUp from './SignUp/SignUp';
 import Login from './LogIn/Login';
 import MainPage from './MainPage/MainPage';
 import EditProfile from './EditProfile/EditProfile';
+import EditImage from './EditImage/EditImage';
 import ProfilePage from './ProfilePage/ProfilePage';
 import ProfileBar from './ProfileBar/ProfileBar';
 import ScreenList from './ScreenList/ScreenList';
 import CreateList from './CreateList/CreateList';
+import FullScreenList from './FullScreenList/FullScreenList';
 
 class App extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class App extends Component {
     this.state = {
       title: 'My(fav)db'
     }
-  }
+  }  
 
   render() {
       return (
@@ -34,7 +36,9 @@ class App extends Component {
             <Route path="/Profile" render={() => <ProfilePage model={modelInstance}/>}/>
             <Route path="/mylists" render={() => <ScreenList model={modelInstance}/>}/>  
             <Route path="/EditProfile" render={() => <EditProfile model={modelInstance}/>}/> 
+            <Route path="/EditImage" render={() => <EditImage model={modelInstance}/>}/> 
             <Route path="/create" render={() => <CreateList model={modelInstance}/>}/>
+            <Route path="/fullscreen" render={() => <FullScreenList/>}/>
         </div>
     );
   }

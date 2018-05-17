@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 
 
 class Start extends Component {
+    setUser = () => {
+        var user = modelInstance.getCookie();
+        if (!user) {
+            modelInstance.setCookie();
+        }
+    }
 
   render() {
       
@@ -25,7 +31,7 @@ class Start extends Component {
                 </div>
                 <div class="col-sm-2">
                     <Link to="main">
-                        <button id="browse" class="startpageBtn">Browse lists</button>
+                        <button onClick={() => this.setUser()}id="browse" class="startpageBtn">Browse lists</button>
                     </Link>
                 </div>
                 <div class="col-sm-3"></div>
