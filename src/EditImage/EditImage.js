@@ -11,7 +11,8 @@ class EditImage extends Component {
         super(props);
         this.state = {
             userImage: "",
-            status: 'NOTLOGGEDIN'
+            status: 'NOTLOGGEDIN',
+            msg: ""
         };
     }
     
@@ -22,7 +23,8 @@ class EditImage extends Component {
             this.ref.on('value', snapshot => {
                 this.setUser(snapshot.val());
                 this.setState({
-                    status:'USER'
+                    status:'USER',
+                    userImage: snapshot.val()
                 });
             })  
         } else {
@@ -60,24 +62,16 @@ class EditImage extends Component {
     
     getChangedInfo = () => {
         var imageURL;
-        // If you haven't tried anything --> take from form
-        if (this.state.userImage == "") {
-            console.log("1");
-            imageURL = document.getElementById("imageURL").value;
-            
-            // If you have tried but chose another pic --> take from form
-        } else if (this.state.userImage != document.getElementById("imageURL").value) {
-            console.log("2");
-            imageURL = document.getElementById("imageURL").value;
-            
-            // If you tried and was happy with your choice --> take from form
+        var inputURL = document.getElementById("imageURL").value;
+        
+        if (this.state.userImage && inputURL == "") {
+            imageURL = this.state.userImage;
         } else {
-            console.log("3");
+            // If you haven't tried anything --> take from form
             imageURL = document.getElementById("imageURL").value;
         }
-        
-            editProfilePic(imageURL);
-            this.redirect();
+                editProfilePic(imageURL);
+                this.redirect();
     }
     
     tryImage() {
@@ -90,13 +84,6 @@ class EditImage extends Component {
         }
     }
   
-    /*updateImage = (e) => {
-        this.setState({
-            userImage: e.target.value
-        })
-    }*/
-
-
   render() {
       var image = this.state.userImage;
       switch (this.state.status) {
@@ -137,6 +124,8 @@ class EditImage extends Component {
                     <input id="userImage" className="formInput" id="imageURL" type="text" />
                     
                     <p id="formText">Please check that your image works before submiting</p>
+                    
+                    {this.state.msg}
                      
                     <button id="SubmitImgBtn" onClick={() => this.tryImage()}>Try it out</button>
                     

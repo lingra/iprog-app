@@ -1,0 +1,66 @@
+.userListContainer {
+    height: 240px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.listImgContainer {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 20%;
+    box-shadow: 0 1px 6px 1px rgba(0,0,0,0.2);
+}
+
+#imgWrapper {
+    height: 224px;
+    width: 150px;
+}
+
+.posterImg {
+    width: 100%;
+    max-height: 100%;
+}
+
+.titleText, .userText {
+    height: auto;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 0.5px 0.5px 2px grey;
+    color: white;
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 150px;
+    height: auto;
+}
+
+#listAuthor {
+    color: #ba4201;
+}
+
+.posterFill {
+    background-color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    width: 200px;
+    height: 200px;
+}
+
+.posterTextFill {
+    color: white;
+    padding-top: 45px;
+    width: 130px;
+    padding-left: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    text-shadow: 0.5px 0.5px 2px grey;
+}
+
+.apiErrMsg {
+    color: white;
+    padding-top: 30px;
+    width: 130px;
+    padding-left: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    text-shadow: 0.5px 0.5px 2px grey;
+}

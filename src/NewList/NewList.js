@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import './NewList.css';
 import {modelInstance} from '../data/MovieModel';
-import { database, saveMovieList, updateMovieList } from "../firebase";
+import { saveMovieList, updateMovieList } from "../firebase";
 
 class NewList extends Component {
 
@@ -44,7 +44,7 @@ class NewList extends Component {
         var listTitle = document.getElementById("listTitle").value;
         if (listTitle.trim() === "") {
             this.setState({
-                msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You forgot to set a title for your list!</span></div>
+                msg: <div id="msg"><span className="glyphicon glyphicon-comment"></span><span> You forgot to set a title for your list!</span></div>
             });
         } else {
             var currentList = this.state.movieList;
@@ -77,7 +77,7 @@ class NewList extends Component {
         var listTitle = document.getElementById("listTitle").value;
         if (listTitle.trim() === "") {
             this.setState({
-                msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You forgot to set a title for your list!</span></div>
+                msg: <div id="msg"><span className="glyphicon glyphicon-comment"></span><span> You forgot to set a title for your list!</span></div>
             });
         } else {
             var currentList = this.state.movieList;
@@ -95,7 +95,7 @@ class NewList extends Component {
             var redirect = this.redirect();
             var editList = modelInstance.getCookie("edit");
             var listKey = editList.listId;
-            modelInstance.setCookie("list", null, listKey);
+            modelInstance.setActiveListCookie(listKey);
             updateMovieList(listKey, listData).then(function(redirect){}).catch(function(error){
                 alert("Something went wrong! Please try again later! \n" + error);
             });
@@ -146,7 +146,7 @@ class NewList extends Component {
             var currList = this.state.movieList;
             if (currList.length + 1 > 10) {
                 this.setState({
-                    msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> Lists are limited to 10 items.</span></div>
+                    msg: <div id="msg"><span className="glyphicon glyphicon-comment"></span><span> Lists are limited to 10 items.</span></div>
                 });
             } else {
                 var result = this.isMovieInListAlready(movieObj.id);
@@ -161,7 +161,7 @@ class NewList extends Component {
                         });
                 } else {
                     this.setState({
-                        msg: <div id="msg"><span class="glyphicon glyphicon-comment"></span><span> You have already added this movie to your list!</span></div>
+                        msg: <div id="msg"><span className="glyphicon glyphicon-comment"></span><span> You have already added this movie to your list!</span></div>
                     });
                 }
             }
@@ -238,8 +238,8 @@ class NewList extends Component {
                 <ol>
                 {
                     this.state.movieList.map(item => {
-                        return <li className="movieInList" id={item.id} onDragStart={(e) => this.onListDragStart(e, this)} onDragOver={(e) => this.handler(e)} onDrop={this.onListDropChange} draggable>
-                                <input class="listItem" value={this.state.movieList.indexOf(item) + 1} disabled/>
+                        return <li className="movieInList" id={item.id} onDragStart={(e) => this.onListDragStart(e, this)} onDragOver={(e) => this.handler(e)} onDrop={this.onListDropChange} draggable key={item.id}>
+                                <input className="listItem" value={this.state.movieList.indexOf(item) + 1} disabled/>
                                 {item.title}
                                 <span id="removeIcon" onClick={(e) => this.removeFromList(e)} className="glyphicon glyphicon-remove"></span>
                                </li>

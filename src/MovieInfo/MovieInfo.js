@@ -65,7 +65,7 @@ class MovieInfo extends Component {
           case 'DONE':
               movie = this.state.movieSpecs.map((movie) => {
           
-              return (<div className="row">
+              return (<div className="row" key={movie.title}>
                         <div className="col-sm-2"></div>
                         <div className="col-sm-9">
                             <div className="row">
@@ -75,15 +75,17 @@ class MovieInfo extends Component {
                                     </div>
                                 </div>
                                 <div className="col-sm-8">
-                                    <div id="movieTitle">{movie.title}</div>
-                                    <div id="movieSpecs">
-                                        Released: <span id="movieinf">{movie.year}</span><br/>
-                                        Runtime: <span id="movieinf">{movie.runtime}</span><br/>
-                                        Rated: <span id="movieinf">{movie.rated}</span><br/>
-                                        Plot: <span id="moviePlot">{movie.plot}</span><br/>
-                                        Director: <span id="movieinf">{movie.director}</span><br/>
-                                        Actors: <span id="movieinf">{movie.actors}</span><br/>
-                                        imDb Score (out of 10): <span id="movieinf">{movie.score}</span><br/>
+                                    <div id="descContainer">
+                                        <div id="movieTitle">{movie.title}</div>
+                                        <div id="movieSpecs">
+                                            Released: <span id="movieinf">{movie.year}</span><br/>
+                                            Runtime: <span id="movieinf">{movie.runtime}</span><br/>
+                                            Rated: <span id="movieinf">{movie.rated}</span><br/>
+                                            <p id="movieplotP">Plot: <span id="moviePlot">{movie.plot}</span></p>
+                                            Director: <span id="movieinf">{movie.director}</span><br/>
+                                            Actors: <span id="movieinf">{movie.actors}</span><br/>
+                                            imDb Score (out of 10): <span id="movieinf">{movie.score}</span><br/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +109,7 @@ class MovieInfo extends Component {
             <div className="row">
                 <div className="col-sm-12">
                   <Link to="/fullscreen" id="titlelink">
-                      <span className="glyphicon glyphicon-th-list" id="returnHome"></span>
+                      <span className="glyphicon glyphicon-arrow-left" id="returnHome"></span>
                   </Link>
                 </div>
             </div>

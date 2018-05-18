@@ -46,22 +46,6 @@ class EditProfile extends Component {
         }
     }
     
-/*
-        this.unsubscribe = authentication.onAuthStateChanged((user) => {
-            if (user) {
-                var currentUser = user.uid;
-                this.ref = database.ref('users/' + currentUser);
-                this.ref.on('value', snapshot => {
-                    this.setUser(snapshot.val().username, snapshot.val().image, snapshot.val().email, snapshot.val().favgenre, snapshot.val().favline, snapshot.val().favmovie, snapshot.val().favactor, snapshot.val().favsnack);
-                })
-                console.log("hämtat data")
-            } else {
-                console.log("Ingen inloggad");
-            }
-        });
-    }
-    */
-    
     componentWillUnmount() {
         this.ref1.off()
         this.ref2.off()
@@ -71,7 +55,6 @@ class EditProfile extends Component {
         var userName = document.getElementById("userName");
         username.trim();
         if (username === "") {
-            console.log("hrj");
             this.setState({
                     msg: <div id="msg"><span className="glyphicon glyphicon-comment"></span><span> You forgot to set a username!</span></div>
                 });
@@ -119,7 +102,6 @@ class EditProfile extends Component {
                 msg: ""
             });
             editProfile(userName, userGenre, userLine, userMovie, userActor, userSnack);
-            console.log("hehjehj");
             this.redirect();
         }
     }

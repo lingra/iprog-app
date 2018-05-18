@@ -27,10 +27,6 @@ class CreateList extends Component {
         });
     }
     
-    componentDidUpdate() {
-        //console.log("new", this.state.movies);
-    }
-
     handleKeywordChange = (event) => {
         // Set current input
         var currentInput = event.target.value;
@@ -44,7 +40,6 @@ class CreateList extends Component {
         })
         // Submit current input to retrieve API
         modelInstance.getAllMovies(this.searchInput).then(movies => {
-            console.log("Result from API", movies.Search);
             this.setState({
                 status: 'DONE',
                 movies: movies.Search
@@ -72,9 +67,9 @@ class CreateList extends Component {
 
       switch (this.state.status) {
           case 'INITIAL':
-              info = (<div class="startInfoContainer">
-                        <span id="searchImg" class="glyphicon glyphicon-search"></span>
-                        <span id="searchImg" class="glyphicon glyphicon-film"></span>
+              info = (<div className="startInfoContainer">
+                        <span id="searchImg" className="glyphicon glyphicon-search"></span>
+                        <span id="searchImg" className="glyphicon glyphicon-film"></span>
                         <p id="startInfo">Get started by searching for a<br/> movie title or theme.</p>
                       </div>);
               break;
@@ -97,7 +92,7 @@ class CreateList extends Component {
               break;
       }
       return (
-        <div id="addListPage" class="nopadding">
+        <div id="addListPage" className="nopadding">
             <div className="row">
                 <div id="loginErrorContainer">
                     <p id="loginErrorTitle">Uh oh!</p>

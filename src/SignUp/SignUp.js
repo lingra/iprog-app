@@ -25,13 +25,13 @@ class Signup extends Component {
         if (error.message) {
             this.setState({
                 errorMsg: (<div id="errorMsg">
-                             <span class="glyphicon glyphicon-comment"></span><span> {error.message}</span>
+                             <span className="glyphicon glyphicon-comment"></span><span> {error.message}</span>
                            </div>)
             })
         } else {
             this.setState({
                 errorMsg: (<div id="errorMsg">
-                             <span class="glyphicon glyphicon-comment"></span><span> {error}</span>
+                             <span className="glyphicon glyphicon-comment"></span><span> {error}</span>
                            </div>)
             })
         }
@@ -71,25 +71,25 @@ class Signup extends Component {
     render() {
           return (
             <div id="signuppage">
-                <div class="row">
+                <div className="row">
                     <Link to="/" style={{ textDecoration: 'none' }}>
                         <p id="webpage-title">M(yFave)Db</p>
                     </Link>
-                    <div class="col-sm-4"></div>
-                    <div class="col-sm-4" id="formDiv">
+                    <div className="col-sm-4"></div>
+                    <div className="col-sm-4" id="formDiv">
                         <p id="formTextSignUp">Username</p>
-                        <input id="signUpUser" type="text" class="formInput"/>
+                        <input id="signUpUser" type="text" className="formInput"/>
                         <p id="formTextSignUp">E-mail</p>
-                        <input id="signUpEmail" type="text" class="formInput"/>
+                        <input id="signUpEmail" type="text" className="formInput"/>
                         <p id="formTextSignUp">Create a password for M(yFave)Db</p>
-                        <input id="signUpPassword1" class="formInput" type="password"/>
+                        <input id="signUpPassword1" className="formInput" type="password"/>
                         <p id="formTextSignUp">Repeat password</p>
-                        <input id="signUpPassword2" class="formInput" type="password"/>
+                        <input id="signUpPassword2" className="formInput" type="password"/>
                         {this.state.errorMsg}
                         <button onClick={() => this.getSignUpInfo()} id="signupBtn">Sign up!</button>
                         {this.renderRedirect()}
                     </div>
-                    <div class="col-sm-4"></div>
+                    <div className="col-sm-4"></div>
                 </div>
             </div>
           );

@@ -20,27 +20,8 @@ const MovieModel = function () {
     
     this.setActiveMovieCookie = function(movieId, listId) {
         document.cookie = "activeMovie=" + movieId + "*from*" + listId;
-        console.log(document.cookie);
     }
-    
-    this.setCookie = function (str, userId, listId, listTitle, list) {
-        if (str === "user") {
-            if (userId) {
-                document.cookie = "currentUser=" + userId;
-            }
-            else {
-                document.cookie = "currentUser=guest";
-            }
-        } 
-        else if (str === "list") {
-            document.cookie = "activeList=" + listId;
-        }
-        else if (str === "edit") {
-            document.cookie = "editList=" + listId + "*@*" + listTitle + "*@*" + list;
-        }
-    console.log("Current cookies: ", document.cookie);
-    }
-
+        
     this.getCookie = function(str) {
         var allCookies = document.cookie.split("; ");
         for (var i = 0; i < allCookies.length; i++) {
@@ -121,7 +102,6 @@ const MovieModel = function () {
                 }
             }
         }
-        console.log("Current cookies: ", document.cookie);
     }
 
     // Variables

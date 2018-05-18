@@ -24,7 +24,7 @@ class Login extends Component {
     displayError = (error) => {
         this.setState({
             errorMsg: (<div id="errorMsg">
-                         <span class="glyphicon glyphicon-comment"></span><span> {error.message}</span>
+                         <span className="glyphicon glyphicon-comment"></span><span> {error.message}</span>
                        </div>)
         })
     }
@@ -53,21 +53,21 @@ class Login extends Component {
       
       return (
         <div id="loginpage">
-            <div class="row">
+            <div className="row">
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <p id="webpage-title">M(yFave)Db</p>
                 </Link>
-                <div class="col-sm-4"></div>
-                <div class="col-sm-4" id="formDiv">
+                <div className="col-sm-4"></div>
+                <div className="col-sm-4" id="formDiv">
                     <p id="formText">Username</p>
-                    <input id="userEmail" class="formInput" type="text"/>
+                    <input id="userEmail" className="formInput" type="text"/>
                     <p id="formText">Password</p>
-                    <input id="userPassword" class="formInput" type="password"/>
+                    <input id="userPassword" className="formInput" type="password"/>
                     {this.state.errorMsg}
                     <button onClick={() => this.signInUser()} id="loginBtn">Login</button>
                     {this.renderRedirect()}
                 </div>
-                <div class="col-sm-4"></div>
+                <div className="col-sm-4"></div>
             </div>
         </div>
       );

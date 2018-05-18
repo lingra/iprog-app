@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './ProfileBar.css';
 import {modelInstance} from '../data/MovieModel';
 import { Link, Redirect } from 'react-router-dom';
-import { database, getProfilePic, getUsername, getUserLists } from "../firebase";
+import { getProfilePic, getUsername, getUserLists } from "../firebase";
 
 
 class ProfileBar extends Component {
@@ -86,17 +86,7 @@ class ProfileBar extends Component {
             image: img
         });
     }
-    
-    /*
-    setUser(userName, userPic) {
-        this.setState({
-            name: userName,
-            image: userPic,
-            status: 'USER',
-        })
-    }
-    */
-    
+        
     fullscreenList = (e) => {
         modelInstance.removeCookie("list");
         modelInstance.setActiveListCookie(e.target.id);
@@ -122,7 +112,6 @@ class ProfileBar extends Component {
       var listInfo;
       var profileInf;
       var fullList;
-      var listItem;
       
       switch (this.state.status) {
           case 'USER':
@@ -133,7 +122,7 @@ class ProfileBar extends Component {
                         </Link>);
             } else {
                 profileImg = (<div id="fakeProfile">
-                                <span id="fakeUser" class="glyphicon glyphicon-user"></span>
+                                <span id="fakeUser" className="glyphicon glyphicon-user"></span>
                               </div>);
                 profileNm = (<Link to="/profile" style={{textDecoration:'none'}}>
                                 <p id="profileName">{this.state.name}</p>
@@ -143,10 +132,10 @@ class ProfileBar extends Component {
                                </div>);
             }
             fullList = this.state.lists.map((item) => {
-                return <div className="profileListItem" onClick={(e) => this.fullscreenList(e)} id={item.listId}>{item.title}</div>;
+                return <div className="profileListItem" onClick={(e) => this.fullscreenList(e)} id={item.listId} key={item.listId}>{item.title}</div>;
             });
             listInfo = (<div>
-                            <span class="glyphicon glyphicon-list"></span><span id="title"> My lists</span>
+                            <span className="glyphicon glyphicon-list"></span><span id="title"> My lists</span>
                              
                             <div id="profileLists">
                                 {fullList}
@@ -161,7 +150,7 @@ class ProfileBar extends Component {
               
           case 'ANONYMOUS':
               profileImg = (<div id="fakeProfile">
-                                <span id="fakeUser" class="glyphicon glyphicon-user"></span>
+                                <span id="fakeUser" className="glyphicon glyphicon-user"></span>
                             </div>);
               profileNm = <p id="loginWarning">You must sign in to view your profile.</p>;
               profileInf = "";

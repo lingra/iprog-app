@@ -4,7 +4,7 @@ import {modelInstance} from '../data/MovieModel';
 import { Link, Redirect } from 'react-router-dom';
 import { database, getList, getProfile, deleteMovieList } from '../firebase';
 
-class ScreenList extends Component {
+class FullScreenList extends Component {
     
     constructor(props) {
         super(props);
@@ -30,7 +30,8 @@ class ScreenList extends Component {
             movieList: [],
             status: "LOADING",
             done: false,
-            to: ""
+            to: "",
+            edit: ""
         })
     }
     
@@ -43,6 +44,9 @@ class ScreenList extends Component {
     getListFromDb = (listId) => {
         this.ref = getList(listId);
         this.ref.on('value', snapshot => {
+            this.setState({
+                movieList: []
+            });
             this.getAuthor(snapshot.val().author);
             this.displayTitle(snapshot.val().title);
             var listArray = JSON.parse(snapshot.val().list);
@@ -51,6 +55,21 @@ class ScreenList extends Component {
     }
 
     getAuthor = (author) => {
+        var currentUser = modelInstance.getCookie("user");
+        
+        // Decide if user can edit list
+        if (currentUser === author) {
+            this.setState({
+                edit: 'display'
+            });
+        }
+        else {
+            this.setState({
+                edit: 'hide'
+            });
+        }
+        
+        // Get author name 
         this.ref2 = getProfile(author);
         this.ref2.on('value', snapshot => {
             this.displayAuthor(snapshot.val().username, snapshot.val().image);
@@ -153,7 +172,6 @@ class ScreenList extends Component {
     }
     
     setMovie = (e) => {
-        console.log("här i set movie");
         var currentList = modelInstance.getCookie("list");
         modelInstance.setActiveMovieCookie(e.target.id, currentList);
     }
@@ -181,6 +199,8 @@ class ScreenList extends Component {
       var author = <p id="author">{this.state.name}</p>;
       var img;
       var movieList;
+      var editBtns;
+      
       if (this.state.image !== "") {
           if (this.state.image === "Unknown") {
               img = (<div id="fs-fakeProfile">
@@ -204,7 +224,7 @@ class ScreenList extends Component {
                   var movieInfo = <p className="movieInfo">{movie.info}</p>;
                   var moviePlacement = index + 1;
           
-              return (<div className="row">
+              return (<div className="row" key={movie.id}>
                           <div className="col-sm-1">
                               <span id="movieNum">{moviePlacement}</span>
                           </div>
@@ -236,6 +256,18 @@ class ScreenList extends Component {
               break;
       }
       
+      switch(this.state.edit) {
+          case 'display':
+              editBtns = (<div className="editBtns">
+                             <button id="editBtn" onClick={() => this.editList()}>Edit</button>
+                             <button id="editBtn" onClick={() => this.removeList()}>Remove</button>
+                          </div>);
+              break;
+          case 'hide':
+              editBtns = "";
+              break;
+      }
+      
       return (
            <div className="container-fluid" id="fullscreenlistpage">
             <div className="row">
@@ -249,7 +281,7 @@ class ScreenList extends Component {
             <div className="row">
                 <div className="row">
                     <div className="col-sm-3">
-                        <div class="authContainer">
+                        <div className="authContainer">
                             <span id="authTitle">Author:</span><br/>
                             <span id="imgContainer">{img}</span>
                             {author}
@@ -260,8 +292,7 @@ class ScreenList extends Component {
                         {movieList}
                     </div>
                     <div className="col-sm-2">
-                        <button id="editBtn" onClick={() => this.editList()}>Edit</button>
-                        <button id="editBtn" onClick={() => this.removeList()}>Remove</button>
+                        {editBtns}
                     </div>
                 </div>
                 {this.renderRedirect()}
@@ -271,4 +302,4 @@ class ScreenList extends Component {
   }
 }
 
-export default ScreenList;
+export default FullScreenList;

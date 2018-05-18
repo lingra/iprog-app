@@ -1,6 +1,4 @@
 import Firebase from "firebase";
-import { map } from 'lodash';
-import {modelInstance} from './data/MovieModel';
 
 //Init
 var config = {
@@ -96,6 +94,10 @@ export const getUserLists = (userId) => {
 
 export const getList = (listId) => {
     return database.ref('lists/' + listId);
+}
+
+export const getAllLists = () => {
+    return database.ref('lists');
 }
 
 export const saveMovieList = (listData) => {

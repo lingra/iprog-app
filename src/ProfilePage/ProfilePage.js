@@ -22,8 +22,7 @@ class ProfilePage extends Component {
             fSnack: "",
             status: "",
             list: [],
-            visit: false,
-            add: false
+            visit: false
         };
     }
     
@@ -41,24 +40,31 @@ class ProfilePage extends Component {
         })
         
         var currentUser = modelInstance.getCookie("user");
-        this.ref = getProfile(currentUser);
-        this.ref2 = getUserLists(currentUser);
-        this.ref3 = getTrivia(currentUser);
-        if (currentUser !== "guest") {
-            this.ref.on('value', snapshot => {
-                this.setUser(snapshot.val().username, snapshot.val().image);
-            })
-            this.ref2.on('value', snapshot => {
-                this.displayLists(snapshot.val());
-            })
-            this.ref3.on('value', snapshot => {
-                this.setTrivia(snapshot.val());
-            })
+        
+        if (currentUser === "guest") {
+            var showError = document.getElementById("loginErrorContainer");
+            showError.style.display = 'block';
         } else {
-            this.setState({
-                status: 'ANONYMOUS'
-            })
-        };
+            this.ref = getProfile(currentUser);
+            this.ref2 = getUserLists(currentUser);
+            this.ref3 = getTrivia(currentUser);
+            if (currentUser !== "guest") {
+                this.ref.on('value', snapshot => {
+                    this.setUser(snapshot.val().username, snapshot.val().image);
+                })
+                this.ref2.on('value', snapshot => {
+                    this.setState({list: []});
+                    this.displayLists(snapshot.val());
+                })
+                this.ref3.on('value', snapshot => {
+                    this.setTrivia(snapshot.val());
+                })
+            } else {
+                this.setState({
+                    status: 'ANONYMOUS'
+                })
+            };
+        }
     }
     
     componentWillUnmount() {
@@ -75,13 +81,32 @@ class ProfilePage extends Component {
     }
     
     setTrivia(triviaArray) {
-        this.setState({
-            fActor: triviaArray["favactor"],
-            fGenre: triviaArray["favgenre"],
-            fLine: triviaArray["favline"],
-            fMovie: triviaArray["favmovie"],
-            fSnack: triviaArray["favsnack"]
-        })
+        if (triviaArray) {
+            if (triviaArray["favactor"]) {
+                this.setState({
+                    fActor: triviaArray["favactor"]
+            });
+            }if (triviaArray["favgenre"]) {
+                this.setState({
+                    fGenre: triviaArray["favgenre"]
+            });
+            }
+            if (triviaArray["favline"]) {
+                this.setState({
+                    fLine: triviaArray["favline"]
+            });
+            }
+            if (triviaArray["favmovie"]) { 
+                this.setState({
+                    fMovie: triviaArray["favmovie"]
+            });
+            }
+            if (triviaArray["favsnack"]) { 
+                this.setState({
+                    fSnack: triviaArray["favsnack"]
+            });
+            };
+        }
     }
 
     displayLists(obj) {
@@ -109,26 +134,14 @@ class ProfilePage extends Component {
         movieObj.image = moviePoster;
         return movieObj;
     }
-    
-    addList = (e) => {
-        modelInstance.removeCookie("list");
-        modelInstance.setCookie("list", null, e.target.id);
-        this.redirectadd();
-    }
-    redirectadd = () => {
-        this.setState({
-            add: true
-        });
-    }
-    
-    
+
     fullscreenList = (e) => {
         modelInstance.removeCookie("list");
-        modelInstance.setCookie("list", null, e.target.id);
-        this.redirectfull();
+        modelInstance.setActiveListCookie(e.target.id);
+        this.redirect();
     }
     
-    redirectfull = () => {
+    redirect = () => {
         this.setState({
             visit: true
         });
@@ -139,9 +152,6 @@ class ProfilePage extends Component {
         if (this.state.visit) {
             return <Redirect to='/fullscreen'></Redirect>
         }
-        if (this.state.add) {
-            return <Redirect to='/create'></Redirect>
-        }
     }
     
     
@@ -149,16 +159,19 @@ class ProfilePage extends Component {
         var profileNm;
         var profileImg;
         var fullList;
-        var listInfo;
+        var listInfo; 
         
-        var addListDiv = (<div className="col-sm-4 container" key="listId" onClick={(e) => this.addList(e)}>
-                            <img src={listImg} alt="my list" className="imgTd" id="addList" ></img>
-                            <span className="glyphicon glyphicon-plus" ></span>
-                            <p className="bottom-center" id="addListP" >
-                                Add List
-                            </p>
+        var addListDiv = (<div className="col-sm-4 container" key="listId" id="listContainer"> 
+                            <Link to="/create" style={{ textDecoration: 'none' }}>
+                            <div className="listImgContainer">
+                                <div id="imgWrapper">
+                                    <div className="posterFill">
+                                        <div className="posterTextFill">Add List <br /><span className="glyphicon glyphicon-plus" ></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                                </Link>
                         </div>);
-
         
         switch (this.state.status) {
             case 'LOADING':
@@ -179,20 +192,43 @@ class ProfilePage extends Component {
                 }
                 
                 fullList = this.state.list.map((item) => {
-                            var posterImg;
-                            if (item.image === 'N/A') {
-                                posterImg = <div className="listImgMissing" id={item.listId}>
-                                                <p className="posterTitle" id={item.listId}>Poster not available</p>
-                                            </div>;
-                            } else {
-                                posterImg = <img src={item.image} alt="my list" className="imgTd" id={item.listId} ></img>;
-                                }
+                        var testImg;
+                        var posterImg = item.image;
+                    
+                        if (posterImg === 'N/A') {
+                          testImg = (<div className="listImgContainer" id={item.id}>
+                                          <div id="imgWrapper">
+                                             <div className="posterFill" id={item.id}>
+                                                 <div id={item.id} className="posterTextFill">Poster not available</div>
+                                              </div>
+                                          </div>
+                                       </div>);
+                        }
+                        else if (posterImg === 'error') {
+                          testImg = (<div className="listImgContainer" id={item.id}>
+                                          <div id="imgWrapper">
+                                             <div className="posterFill" id={item.id}>
+                                                 <div className="apiErrMsg" id={item.id}>Sorry! Unable to fetch poster from API.</div>
+                                              </div>
+                                          </div>
+                                       </div>);
+                        }
+                        else {
+                            testImg = (<div className="listImgContainer" id={item.id}>
+                                            <div className="imgWrapper" id={item.id}>
+                                                <img className="posterImg" src={posterImg} alt="Poster Img" id={item.listId}/>
+                                            </div>
+                                       </div>)
+                        }
                         
-                        return (<div className="col-sm-4 container" key={item.listId} onClick={(e) => this.fullscreenList(e)}>
-                                {/*<img src={item.image} alt="my list" className="imgTd" id={item.listId} ></img>*/}
-                                {posterImg}
-                                <div className="bottom-center" id={item.listId} >
-                                    {item.title}
+                        return (<div className="col-sm-4 container" key={item.listId} onClick={(e) => this.fullscreenList(e)} id="listContainer">
+                                <div >
+                                    {testImg}
+                                </div>
+                                <div className="listTextContainer">
+                                    <div className="titleText" id={item.listId} >
+                                        {item.title}
+                                    </div>
                                 </div>
                                 
                             </div>);
@@ -206,7 +242,6 @@ class ProfilePage extends Component {
               break;
                 
             case 'ANONYMOUS':
-                console.log("Du är inte inloggad");
                 break;
         }
         
@@ -215,6 +250,10 @@ class ProfilePage extends Component {
         return (
             <div id="ProfilePage">
                 <div className="row">
+                    <div id="loginErrorContainer">
+                        <p id="loginErrorTitle">Uh oh!</p>
+                        <p id="loginErrorParagraph">How did you end up here? Only signed in users can view your profile.</p>
+                    </div>
                     <div className="col-sm-6">
                         <div className="col-sm-1">
                             <Link to="/main" id="titlelink">
@@ -283,5 +322,7 @@ class ProfilePage extends Component {
         );
   }
 }
+
+
 
 export default ProfilePage;

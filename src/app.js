@@ -9,8 +9,6 @@ import MainPage from './MainPage/MainPage';
 import EditProfile from './EditProfile/EditProfile';
 import EditImage from './EditImage/EditImage';
 import ProfilePage from './ProfilePage/ProfilePage';
-import ProfileBar from './ProfileBar/ProfileBar';
-import ScreenList from './ScreenList/ScreenList';
 import CreateList from './CreateList/CreateList';
 import FullScreenList from './FullScreenList/FullScreenList';
 import MovieInfo from './MovieInfo/MovieInfo';
@@ -34,12 +32,11 @@ class App extends Component {
             <Route path="/Signup" render={() => <SignUp model={modelInstance}/>}/>
             <Route path="/Login" render={() => <Login model={modelInstance}/>}/>
             <Route path="/Main" render={() => <MainPage model={modelInstance}/>}/>
-            <Route path="/Profile" render={() => <ProfilePage model={modelInstance}/>}/>
-            <Route path="/mylists" render={() => <ScreenList model={modelInstance}/>}/>  
+            <Route path="/Profile" render={() => <ProfilePage model={modelInstance}/>}/>  
             <Route path="/EditProfile" render={() => <EditProfile model={modelInstance}/>}/> 
             <Route path="/EditImage" render={() => <EditImage model={modelInstance}/>}/> 
             <Route path="/create" render={() => <CreateList model={modelInstance}/>}/>
-            <Route path="/fullscreen" render={() => <FullScreenList/>}/>
+            <Route path="/fullscreen" render={() => <FullScreenList model={modelInstance}/>}/>
             <Route path="/viewMovie" render={() => <MovieInfo model={modelInstance}/>}/>
         </div>
     );

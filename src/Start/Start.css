@@ -1,5 +1,7 @@
 #startpage {
     background-image: url('../images/moviescreen.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 100vh;
 }
 

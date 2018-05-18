@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import './Movies.css';
-import { Link } from 'react-router-dom';
-import testimg from "../images/gradients2.jpg";
 
 class Movies extends Component {
     
@@ -52,12 +50,12 @@ class Movies extends Component {
             movieList = this.state.currentMovies.map((movie) => {
                 var posterImg;
                 if (movie.Poster === 'N/A') {
-                    posterImg = <div class="imgMissing"><p id="postTitle">Poster not available</p></div>;
+                    posterImg = <div className="imgMissing"><p id="postTitle">Poster not available</p></div>;
                 } else {
                     posterImg = <img className="img" draggable="false" alt={movie.Title} src={movie.Poster}/>;
                 }
                 return (
-                    <div className="col-sm-3 movieContainer" draggable="true" data-appendto="movie" onDragStart={(e) => this.onDragStart(e, this)} title={movie.Title} id={movie.imdbID}>
+                    <div className="col-sm-3 movieContainer" draggable="true" data-appendto="movie" onDragStart={(e) => this.onDragStart(e, this)} title={movie.Title} id={movie.imdbID} key={movie.imdbID}>
                         <table className="image">
                             <tbody>
                                 <tr>

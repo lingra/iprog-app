@@ -20,25 +20,25 @@ class Start extends Component {
       
       return (
         <div id="startpage">
-            <div class="row">
+            <div className="row">
                 <p id="webpage-title-start">M(yFave)Db</p>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-2">
+                <div className="col-sm-3"></div>
+                <div className="col-sm-2">
                     <Link to="/signup">
-                        <button id="signup" class="startpageBtn">Sign up</button>
+                        <button id="signup" className="startpageBtn">Sign up</button>
                     </Link>
                 </div>
-                <div class="col-sm-2">
+                <div className="col-sm-2">
                     <Link to="login">
-                        <button id="login" class="startpageBtn">Login</button>
+                        <button id="login" className="startpageBtn">Login</button>
                     </Link>
                 </div>
-                <div class="col-sm-2">
+                <div className="col-sm-2">
                     <Link to="main">
-                        <button id="browse" class="startpageBtn">Browse lists</button>
+                        <button id="browse" className="startpageBtn">Browse lists</button>
                     </Link>
                 </div>
-                <div class="col-sm-3"></div>
+                <div className="col-sm-3"></div>
             </div>
         </div>
       );
